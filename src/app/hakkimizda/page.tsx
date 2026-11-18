@@ -1,2 +1,10 @@
-import Link from 'next/link';
-export default function About(){ return <main className="content-page"><Link href="/" className="backlink">← Deneyime dön</Link><p className="eyebrow">BYM İNŞAAT / HAKKIMIZDA</p><h1>Güven, tutarlılıkla inşa edilir.</h1><p>Bu sayfa yaratıcı prototiptir. Kurumsal tarihçe ve beyanlar yayına çıkmadan önce BYM kurumsal kataloğundan doğrulanmalıdır.</p></main> }
+import type {Metadata} from 'next';
+import {PageShell} from '@/components/ui/PageShell';
+
+export const metadata:Metadata={title:'Hakkımızda | BYM İnşaat',description:'BYM İnşaat hakkında. Kurumsal içerik onay sürecindedir.'};
+
+export default function About(){
+ return <PageShell eyebrow="BYM İNŞAAT / HAKKIMIZDA" title="Güven, tutarlılıkla inşa edilir." lead="Kurumsal tarihçe, değerler ve referanslar BYM İnşaat kurumsal kataloğundan doğrulandıktan sonra bu sayfada yayınlanacaktır.">
+  <p className="note">Bu sayfada henüz doğrulanmamış kurumsal beyan, rakam veya ödül yer almaz.</p>
+ </PageShell>;
+}
