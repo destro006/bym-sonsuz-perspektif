@@ -3,7 +3,7 @@ import {useCallback,useEffect,useRef,useState} from 'react';
 import {Canvas} from '@react-three/fiber';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
-import {Scene} from '@/components/three/Scene';
+import {Scene,type Quality} from '@/components/three/Scene';
 import {SiteHud} from '@/components/ui/SiteHud';
 import {chapterAt} from '@/lib/chapters';
 import Link from 'next/link';
@@ -16,6 +16,25 @@ export default function Experience(){
  const [progress,setProgress]=useState(0);
  const [chapter,setChapter]=useState(0);
  const [webgl,setWebgl]=useState(true);
+ const [quality,setQuality]=useState<Quality|null>(null);
+ const [mobile,setMobile]=useState(false);
+ useEffect(()=>{
+  // Real capability probe instead of assuming WebGL: no context → static fallback stage.
+  const probe=document.createElement('canvas');
+  const gl=(probe.getContext('webgl2')||probe.getContext('webgl')) as WebGLRenderingContext|null;
+  if(!gl){setWebgl(false);return;}
+  const maxTexture=gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
+  gl.getExtension('WEBGL_lose_context')?.loseContext();
+  const isMobile=window.matchMedia('(max-width: 860px), (pointer: coarse)').matches;
+  const lowCore=(navigator.hardwareConcurrency||8)<=4;
+  setMobile(isMobile);
+  setQuality({
+   particles:isMobile?(lowCore?5000:7500):12000,
+   // Many phone GPUs cap textures at 4096px; the 5400px original would fail to upload there.
+   earthTexture:!isMobile&&maxTexture>=8192?'/assets/earth/nasa-blue-marble-5400.jpg':'/assets/earth/nasa-blue-marble-2048.jpg',
+   projectPhoto:isMobile?'/assets/project/review-required/IMG_0810_peyzaj-1600.jpg':'/assets/project/review-required/IMG_0810_peyzaj.jpg',
+  });
+ },[]);
  const [isReducedMotion,setReducedMotion]=useState(false);
  useEffect(()=>{
   const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -61,9 +80,9 @@ export default function Experience(){
    <section className="scroll-journey" ref={wrap}>
     <div className="stage-sticky">
      {webgl && !isReducedMotion ?
-       <Canvas dpr={[1,1.6]} camera={{position:[0,0,16],fov:48,near:0.1,far:120}} gl={{antialias:true,alpha:false,powerPreference:'high-performance'}} onCreated={({gl})=>gl.setClearColor('#080d19')} onError={()=>setWebgl(false)}>
-         <Scene progress={progressRef}/>
-       </Canvas>
+       (quality && <Canvas dpr={mobile?[1,1.5]:[1,1.75]} camera={{position:[0,0,16],fov:48,near:0.1,far:120}} gl={{antialias:!mobile,alpha:false,powerPreference:'high-performance'}} onCreated={({gl})=>gl.setClearColor('#080d19')}>
+         <Scene progress={progressRef} quality={quality}/>
+       </Canvas>)
        : <div className="fallback-stage" aria-label="Sadeleştirilmiş deneyim"><div className="fallback-orb"/></div>
      }
      <div className="cloud-bridge" style={{opacity: progress >.58 && progress<.83 ? Math.min((progress-.58)*12,(.83-progress)*12,.94):0}}/>

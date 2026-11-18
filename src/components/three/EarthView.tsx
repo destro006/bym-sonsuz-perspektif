@@ -27,8 +27,10 @@ void main(){
 }
 `;
 
-export function EarthView({progress}:{progress:React.MutableRefObject<number>}){
-  const tex = useTexture('/assets/earth/nasa-blue-marble-5400.jpg');
+export function EarthView({progress,texture}:{progress:React.MutableRefObject<number>;texture:string}){
+  const tex = useTexture(texture);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
   const group = useRef<THREE.Group>(null);
   const surface = useRef<THREE.MeshStandardMaterial>(null);
   const atmosphere = useRef<THREE.ShaderMaterial>(null);

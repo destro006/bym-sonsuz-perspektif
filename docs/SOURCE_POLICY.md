@@ -25,3 +25,8 @@ Original file: `public/assets/brand/bym-logo-original.png` supplied from BYM sou
 - High-quality original 360° or interior geometry if free-roam is required
 
 Do not publish invented specifications, false geography, fake construction footage or AI-created people representing the company.
+
+## Derived delivery files (resized only, same provenance as originals)
+- `public/assets/earth/nasa-blue-marble-2048.jpg` — 2048×1024 Lanczos downscale of `nasa-blue-marble-5400.jpg`. Used on phones and GPUs whose `MAX_TEXTURE_SIZE` is below 8192 (a 5400px texture fails to upload on 4096-limit devices). Same attribution/licence requirement as the original.
+- `public/assets/project/review-required/IMG_0810_peyzaj-1600.jpg` — 1600×900 downscale of `IMG_0810_peyzaj.jpg` for mobile bandwidth. Still **review required / unapproved**, exactly like its source.
+- The BYM logo has no derived copy and is never re-encoded.

@@ -9,8 +9,9 @@ import {mix,pulse,smooth} from '@/lib/math';
  * This is an honest 2.5D bridge while BYM's actual 3D architecture is missing.
  * DO NOT replace this with a made-up apartment geometry. Images are REVIEW REQUIRED.
  */
-export function ProjectImage({progress}:{progress:React.MutableRefObject<number>}){
- const texture=useTexture('/assets/project/review-required/IMG_0810_peyzaj.jpg');
+export function ProjectImage({progress,src}:{progress:React.MutableRefObject<number>;src:string}){
+ const texture=useTexture(src);
+ texture.colorSpace=THREE.SRGBColorSpace;
  const group=useRef<THREE.Group>(null);
  const mat=useRef<THREE.MeshBasicMaterial>(null);
  useFrame(()=>{
