@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Experience(){
  const wrap=useRef<HTMLElement>(null);
  const progressRef=useRef(0);
+ const cloudRef=useRef<HTMLDivElement>(null);
  const [progress,setProgress]=useState(0);
  const [chapter,setChapter]=useState(0);
  const [webgl,setWebgl]=useState(true);
@@ -81,11 +82,13 @@ export default function Experience(){
     <div className="stage-sticky">
      {webgl && !isReducedMotion ?
        (quality && <Canvas dpr={mobile?[1,1.5]:[1,1.75]} camera={{position:[0,0,16],fov:48,near:0.1,far:120}} gl={{antialias:!mobile,alpha:false,powerPreference:'high-performance'}} onCreated={({gl})=>gl.setClearColor('#080d19')}>
-         <Scene progress={progressRef} quality={quality}/>
+         <Scene progress={progressRef} quality={quality} cloud={cloudRef}/>
        </Canvas>)
        : <div className="fallback-stage" aria-label="Sadeleştirilmiş deneyim"><div className="fallback-orb"/></div>
      }
-     <div className="cloud-bridge" style={{opacity: progress >.58 && progress<.83 ? Math.min((progress-.58)*12,(.83-progress)*12,.94):0}}/>
+     {/* Opacity is written every frame by <Scene> from the same eased progress as the camera,
+         so the cloud cover and the Earth pull-back can never drift apart (incl. rapid reversal). */}
+     <div className="cloud-bridge" ref={cloudRef} style={{opacity:0}} aria-hidden="true"/>
      <SiteHud chapter={chapter} progress={progress} goTo={goTo}/>
      <a className="skip-link" href="#sonraki-adim">3D anlatımı atla ↓</a>
      {isReducedMotion && <p className="reduced-note">Hareket azaltma tercihiniz nedeniyle hafif görünüm açıldı.</p>}

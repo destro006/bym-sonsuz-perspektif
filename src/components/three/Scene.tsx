@@ -6,7 +6,7 @@ import {CosmicWeb} from './CosmicWeb';
 import {GalaxyField} from './GalaxyField';
 import {EarthView} from './EarthView';
 import {ProjectImage} from './ProjectImage';
-import {clamp, mix, smooth, track, type Key} from '@/lib/math';
+import {clamp, mix, pulse, smooth, track, type Key} from '@/lib/math';
 
 /**
  * Camera path: p → [x, y, z]. One continuous track (no branches), so there is no jump anywhere.
@@ -27,13 +27,21 @@ const cam = [0,0,0];
 
 export type Quality = {particles:number;earthTexture:string;projectPhoto:string};
 
-export function Scene({progress,quality}:{progress:React.MutableRefObject<number>;quality:Quality}){
+/** Cloud cover over the Earth→architecture handoff; fully opaque while the camera pulls back (0.66–0.76). */
+export const cloudCover=(p:number)=>0.94*pulse(0.555,0.665,0.76,0.85,p);
+/** Max eased-progress speed (progress units / second). Keeps a fling or a rail jump from
+ * crossing the narrow cloud ramp in one or two frames (measured: 0.41 → 0.13 opacity/frame at 60 fps). */
+const MAX_SPEED=0.5;
+
+export function Scene({progress,quality,cloud}:{progress:React.MutableRefObject<number>;quality:Quality;cloud?:React.RefObject<HTMLDivElement|null>}){
  // Visual progress eases toward the single ScrollTrigger progress. It is still a pure function of
  // scroll position (no independent timeline), so scrubbing up/down/jumping stays reversible,
  // but touch-scroll steps on mobile no longer snap the camera frame-to-frame.
  const visual=useRef(progress.current);
  useFrame(({camera,size},delta)=>{
-  visual.current=THREE.MathUtils.damp(visual.current,progress.current,6,Math.min(delta,0.1));
+  const dt=Math.min(delta,0.1);
+  const eased=THREE.MathUtils.damp(visual.current,progress.current,6,dt);
+  visual.current+=clamp(eased-visual.current,-MAX_SPEED*dt,MAX_SPEED*dt);
   if(Math.abs(visual.current-progress.current)<1e-4)visual.current=progress.current;
   const p=visual.current;
   track(CAMERA,p,cam);
@@ -43,6 +51,10 @@ export function Scene({progress,quality}:{progress:React.MutableRefObject<number
   const portrait=mix(clamp(0.95/aspect,1,1.5),1,smooth(.66,.76,p));
   camera.position.set(cam[0]*Math.min(1,aspect),cam[1],cam[2]*portrait);
   camera.lookAt(target);
+  if(cloud?.current){
+   const o=cloudCover(p).toFixed(3);
+   if(cloud.current.style.opacity!==o)cloud.current.style.opacity=o;
+  }
  });
  return <>
   <color attach="background" args={['#080d19']}/>
