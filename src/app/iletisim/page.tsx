@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Contact(){ return <main className="content-page"><Link href="/" className="backlink">← Deneyime dön</Link><p className="eyebrow">BYM İNŞAAT / İLETİŞİM</p><h1>Geleceği birlikte inşa edelim.</h1><p>İletişim bilgileri ve işleyen form, şirket yetkililerinin onayının ardından eklenecektir. Bilinmeyen telefon, adres veya e-posta burada uydurulmaz.</p><a href="https://byminsaat.com.tr/" target="_blank" rel="noreferrer">Resmî web sitesi ↗</a></main> }

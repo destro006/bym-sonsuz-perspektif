@@ -1,0 +1,9 @@
+[
+ {"id":"cosmos","start":0.00,"end":0.14,"title":"Bir düşünceyle başlar.","eyebrow":"01 / KOZMOS","body":"Sonsuzluğun içindeki her iz, bir başlangıcın habercisidir.","camera":"starfield-wide","visual":"procedural-gpu-particles"},
+ {"id":"galaxy","start":0.14,"end":0.29,"title":"Her büyük yapı, bir hayalle başlar.","eyebrow":"02 / GALAKSİ","body":"Bir hayal, bulunduğu dünyayı değiştirebilir.","camera":"galaxy-approach","visual":"spiral-starfield"},
+ {"id":"earth","start":0.29,"end":0.48,"title":"Hayaller bir dünyaya dönüşür.","eyebrow":"03 / DÜNYA","body":"Dünya üzerinde bir yer, insanlar için bir yuva olur.","camera":"earth-approach","visual":"nasa-blue-marble-earth"},
+ {"id":"region","start":0.48,"end":0.65,"title":"Bir yere anlam katan, yaşamdır.","eyebrow":"04 / COĞRAFYA","body":"Konum geçişi, proje koordinatları doğrulanana kadar temsili olarak kalır.","camera":"atmosphere-transition","visual":"cloud-handoff","status":"geolocation_pending"},
+ {"id":"project","start":0.65,"end":0.79,"title":"Bir hayal, Rüya Şehir olur.","eyebrow":"05 / MİMARİ","body":"Gerçek proje materyalleriyle anlatılan bir mimari yolculuk.","camera":"project-reveal","visual":"review-required-project-photo","status":"project-image-approval_pending"},
+ {"id":"structure","start":0.79,"end":0.9,"title":"Her katında emek. Her detayında düşünce.","eyebrow":"06 / YAPI","body":"Gerçek model geldiğinde katlar ayrılacak ve 3D gezinti açılacak.","camera":"building-orbit","visual":"official-glb-asset-slot","status":"model_missing"},
+ {"id":"portfolio","start":0.9,"end":1.0,"title":"Güven, tutarlılıkla inşa edilir.","eyebrow":"07 / BYM İNŞAAT","body":"Yolculuk diğer projelere ve kurumsal anlatıma açılır.","camera":"brand-reveal","visual":"original-unchanged-logo"}
+]

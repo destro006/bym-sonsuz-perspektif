@@ -1,0 +1,20 @@
+{
+  "brand": "BYM İnşaat",
+  "logo": "/assets/brand/bym-logo-original.png",
+  "primaryProject": "Rüya Şehir",
+  "source": {
+    "name": "Proje Bilgileri.txt",
+    "url": "https://drive.google.com/file/d/1P8jI0zuNKbBsjVNoLh2wDngHKVo8pEFU/view"
+  },
+  "status": "source_transcribed_pending_client_approval",
+  "reportedValues": {
+    "blocks": 3,
+    "floorsPerBlock": 18,
+    "apartments4plus1": 113,
+    "landDecares": 11,
+    "constructionAreaM2": 30000,
+    "constructionYears": 3,
+    "amenities": ["Kapalı yüzme havuzu", "Türk hamamı", "Fin hamamı", "Fitness", "Gölet", "Şelale", "Jeneratör"]
+  },
+  "unknown": ["Exact verified coordinates", "Architectural 3D model", "Commercial usage approval", "All elevations", "Terrain data", "Apartment interiors as GLB"]
+}
