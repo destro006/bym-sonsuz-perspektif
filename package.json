@@ -8,6 +8,8 @@
     "start": "next start",
     "lint:assets": "node scripts/validate-assets.mjs",
     "preview:single": "vite build --config preview/vite.config.ts",
+    "deploy:watch": "node scripts/auto-deploy.mjs",
+    "deploy": "npx --yes vercel deploy --prod --yes",
     "build:pages": "PAGES=1 NEXT_PUBLIC_BASE_PATH=/bym-sonsuz-perspektif next build && touch out/.nojekyll"
   },
   "dependencies": {

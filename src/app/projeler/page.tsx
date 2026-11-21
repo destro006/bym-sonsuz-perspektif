@@ -1,33 +1,22 @@
+import {asset} from '@/lib/asset';
+import Link from 'next/link';
 import type {Metadata} from 'next';
-import {PageShell} from '@/components/ui/PageShell';
-import facts from '../../../data/project-facts.json';
+import {SiteShell} from '@/components/bym-portfolio/SiteShell';
+import {ProjectsExperience} from '@/components/bym-portfolio/ProjectsExperience';
+import {LayeredFeature} from '@/components/bym-portfolio/Layered';
+import {Icon} from '@/components/bym-portfolio/Icon';
+import {ArrowSwap} from '@/components/bym-portfolio/ArrowSwap';
 
-export const metadata:Metadata={title:'Projeler | BYM İnşaat',description:'BYM İnşaat projeleri. Rüya Şehir proje bilgileri müşteri onayı sürecindedir.'};
-
-const v=facts.reportedValues;
-const rows:[string,string][]=[
- ['Blok sayısı',`${v.blocks} blok`],
- ['Kat sayısı',`Her blokta ${v.floorsPerBlock} kat`],
- ['Daire',`${v.apartments4plus1} adet 4+1`],
- ['Arsa',`${v.landDecares} dönüm`],
- ['İnşaat alanı',`${v.constructionAreaM2.toLocaleString('tr-TR')} m²`],
- ['İnşaat süresi',`${v.constructionYears} yıl`],
-];
+export const metadata:Metadata={title:'Projeler | BYM İnşaat',description:'BYM İnşaat proje arşivi: Rüya Şehir, Gaziantep Villaları, Burak Manzara Evleri, Bilal Kafe ve Nisa Apartmanı.'};
 
 export default function Projects(){
- return <PageShell eyebrow="BYM İNŞAAT / PROJELER" title="Projelerimiz." lead="Proje arşivi, müşteri tarafından onaylanmış görseller ve doğrulanmış bilgilerle tamamlanacaktır.">
-  <article className="project-card" aria-labelledby="ruya-sehir">
-   <div className="project-card-head">
-    <h2 id="ruya-sehir">Rüya Şehir</h2>
-    <span className="status-chip">Bilgiler onay bekliyor</span>
-   </div>
-   <p>Aşağıdaki değerler BYM kaynak dosyasından aktarılmıştır ve yayına çıkmadan önce müşteri tarafından doğrulanacaktır.</p>
-   <dl className="fact-grid">
-    {rows.map(([k,val])=><div key={k}><dt>{k}</dt><dd>{val}</dd></div>)}
-   </dl>
-   <h3>Sosyal olanaklar</h3>
-   <ul className="amenities">{v.amenities.map(a=><li key={a}>{a}</li>)}</ul>
-   <p className="note">3D mimari model, proje konumu ve onaylı görseller henüz eklenmedi; bu nedenle bu sayfada proje fotoğrafı gösterilmez.</p>
-  </article>
- </PageShell>;
+ return <SiteShell>
+  <ProjectsExperience/>
+  <LayeredFeature src={asset("/assets/bym-portfolio-curated/ruya-sehir/ruya-landscape.webp")} alt="Rüya Şehir peyzaj görselleştirmesi" side="right">
+   <span className="st-kicker">YAŞAMA DEĞER</span>
+   <h2 className="st-h3">Mekânın her ayrıntısı, <em>insan için var.</em></h2>
+   <p className="st-card-text">Projelerimizin ardında bir tasarım yaklaşımı, bir yapım süreci ve geleceğe dönük bir sorumluluk bulunur.</p>
+   <Link href="/hakkimizda" className="st-btn">Hikâyemiz<span className="st-btn-dot"><ArrowSwap size={14}/></span></Link>
+  </LayeredFeature>
+ </SiteShell>;
 }

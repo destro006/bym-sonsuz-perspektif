@@ -1,5 +1,5 @@
 [
- {"id":"cosmos","start":0.00,"end":0.14,"title":"Bir düşünceyle başlar.","eyebrow":"01 / KOZMOS","body":"Sonsuzluğun içindeki her iz, bir başlangıcın habercisidir.","camera":"starfield-wide","visual":"procedural-gpu-particles"},
+ {"id":"cosmos","start":0.00,"end":0.14,"title":"SONSUZLUKTA BİR HAYAL…","eyebrow":"01 / KOZMOS","body":"GELECEĞE UZANAN BİR İZ.","camera":"starfield-wide","visual":"procedural-gpu-particles"},
  {"id":"galaxy","start":0.14,"end":0.29,"title":"Her büyük yapı, bir hayalle başlar.","eyebrow":"02 / GALAKSİ","body":"Bir hayal, bulunduğu dünyayı değiştirebilir.","camera":"galaxy-approach","visual":"spiral-starfield"},
  {"id":"earth","start":0.29,"end":0.48,"title":"Hayaller bir dünyaya dönüşür.","eyebrow":"03 / DÜNYA","body":"Dünya üzerinde bir yer, insanlar için bir yuva olur.","camera":"earth-approach","visual":"nasa-blue-marble-earth"},
  {"id":"region","start":0.48,"end":0.65,"title":"Bir yere anlam katan, yaşamdır.","eyebrow":"04 / COĞRAFYA","body":"Konum geçişi, proje koordinatları doğrulanana kadar temsili olarak kalır.","camera":"atmosphere-transition","visual":"cloud-handoff","status":"geolocation_pending"},
