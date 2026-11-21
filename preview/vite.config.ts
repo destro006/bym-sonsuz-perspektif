@@ -42,6 +42,7 @@ function inlineAssets():Plugin{
 export default defineConfig({
  root:__dirname,
  base:'./',
+ define:{'process.env.NEXT_PUBLIC_BASE_PATH':JSON.stringify('')},
  plugins:[inlineAssets(),react(),viteSingleFile()],
  resolve:{alias:[
   {find:'@',replacement:path.join(root,'src')},

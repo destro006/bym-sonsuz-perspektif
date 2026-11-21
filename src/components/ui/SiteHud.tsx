@@ -1,4 +1,5 @@
 'use client';
+import {asset} from '@/lib/asset';
 import Image from 'next/image';
 import Link from 'next/link';
 import {SiteHeader} from './SiteHeader';
@@ -26,7 +27,7 @@ export function SiteHud({chapter,progress,goTo}:{chapter:number,progress:number,
   {/* Chapter 07: brand reveal. The original logo file is displayed as-is; only its container animates. */}
   <AnimatePresence>
    {chapter===CHAPTERS.length-1 && <motion.div className="brand-reveal" initial={{opacity:0,y:28,scale:.96}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:18,scale:.98}} transition={{duration:.8,ease:[.22,1,.36,1]}}>
-    <div className="brand-reveal-logo"><Image src="/assets/brand/bym-logo-original.png" alt="BYM İnşaat logosu" width={360} height={146} unoptimized/></div>
+    <div className="brand-reveal-logo"><Image src={asset('/assets/brand/bym-logo-original.png')} alt="BYM İnşaat logosu" width={360} height={146} unoptimized/></div>
     <div className="brand-reveal-links"><Link href="/projeler">Projeleri keşfet ↗</Link><Link href="/iletisim">İletişime geç ↗</Link></div>
    </motion.div>}
   </AnimatePresence>

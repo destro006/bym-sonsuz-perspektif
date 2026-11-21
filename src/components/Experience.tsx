@@ -1,4 +1,5 @@
 'use client';
+import {asset} from '@/lib/asset';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {Canvas} from '@react-three/fiber';
 import {PerformanceMonitor} from '@react-three/drei';
@@ -56,8 +57,8 @@ export default function Experience(){
   setQuality({
    particles:isMobile?(lowCore?5000:7500):12000,
    // Many phone GPUs cap textures at 4096px; the 5400px original would fail to upload there.
-   earthTexture:!isMobile&&maxTexture>=8192?'/assets/earth/nasa-blue-marble-5400.jpg':'/assets/earth/nasa-blue-marble-2048.jpg',
-   projectPhoto:isMobile?'/assets/project/review-required/IMG_0810_peyzaj-1600.jpg':'/assets/project/review-required/IMG_0810_peyzaj.jpg',
+   earthTexture:asset(!isMobile&&maxTexture>=8192?'/assets/earth/nasa-blue-marble-5400.jpg':'/assets/earth/nasa-blue-marble-2048.jpg'),
+   projectPhoto:asset(isMobile?'/assets/project/review-required/IMG_0810_peyzaj-1600.jpg':'/assets/project/review-required/IMG_0810_peyzaj.jpg'),
   });
  },[]);
  const [isReducedMotion,setReducedMotion]=useState(false);

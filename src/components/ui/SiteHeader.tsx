@@ -1,4 +1,5 @@
 'use client';
+import {asset} from '@/lib/asset';
 import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
@@ -23,7 +24,7 @@ export function SiteHeader({variant='stage'}:{variant?:'stage'|'page'}){
  return <>
   <header className={`topbar topbar-${variant}`} aria-label="Ana gezinme">
    <Link href="/" className="brand-lockup" aria-label="BYM İnşaat — Ana sayfa">
-    <Image src="/assets/brand/bym-logo-original.png" alt="BYM İnşaat" width={128} height={52} priority unoptimized/>
+    <Image src={asset('/assets/brand/bym-logo-original.png')} alt="BYM İnşaat" width={128} height={52} priority unoptimized/>
    </Link>
    <nav className="nav-pill" aria-label="Sayfalar">
     {PAGES.map(p=><Link key={p.href} href={p.href} className={path===p.href?'active':undefined} aria-current={path===p.href?'page':undefined}>{p.label}</Link>)}
