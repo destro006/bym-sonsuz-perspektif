@@ -111,7 +111,9 @@ export function buildCity(budget: CityBudget) {
   }
 
   /* ---------- particles ---------- */
-  const total = budget.roads + budget.parcels + budget.buildings + budget.dust;
+  const tb = boxes.find(b => b.target)!;
+  const targetPlan = planTarget(tb, budget);
+  const total = budget.roads + budget.parcels + budget.buildings + budget.dust + targetPlan.count;
   const position = new Float32Array(total * 3), start = new Float32Array(total * 3), color = new Float32Array(total * 3), params = new Float32Array(total * 4);
   let o = 0;
   const emit = (x: number, y: number, z: number, sx: number, sy: number, sz: number, c: readonly number[], k: number, size: number, delay: number, kind: number) => {
@@ -159,7 +161,7 @@ export function buildCity(budget: CityBudget) {
     emit(x, 0.015, z, x, 0.015, z, CYAN, 0.32 + r() * 0.2, 0.026, Math.min(0.75, dist / 70 + t * 0.22), 1);
   }
   // Buildings: luminous edges + window lights + interior haze, rising from the ground footprint.
-  const areas = boxes.map(b => Math.pow(2 * (b.w + b.d) * b.h + b.w * b.d, 0.85) * (b.target ? 3.2 : 1));
+  const areas = boxes.map(b => b.target ? 0 : Math.pow(2 * (b.w + b.d) * b.h + b.w * b.d, 0.85));
   const areaTotal = areas.reduce((a, b) => a + b, 0);
   for (let q = 0; q < budget.buildings; q++) {
     let pick = r() * areaTotal, bi = 0;
@@ -199,12 +201,91 @@ export function buildCity(budget: CityBudget) {
     const delay = b.delay + 0.18 * (y / Math.max(0.5, b.h)) + r() * 0.05;
     emit(x, y, z, sx, 0.0, sz, c, k, size, Math.min(0.95, delay), kind);
   }
+  emitTarget(tb, targetPlan, emit, r, WARM, GOLD);
   // Volumetric dust drifting over the city, settling as structures stabilise.
   for (let q = 0; q < budget.dust; q++) {
     const x = (r() - 0.5) * 70, z = (r() - 0.5) * 70, y = Math.pow(r(), 2) * 6;
     emit(x, y, z, x + gauss(r) * 2, y + 2 + r() * 4, z + gauss(r) * 2, r() < 0.6 ? CYAN : GOLD, 0.03 + r() * 0.04, 0.18 + r() * 0.3, r() * 0.5, 4);
   }
   return { position, start, color, params, count: o, boxes, districts };
+}
+
+/* ---------- featured mass: aligned particles + wrapping aura ---------- */
+// Must match the window grid in DescentField's MASS_FRAG (metric cells measured from the box
+// centre horizontally and from the ground vertically), so particle windows sit on the drawn ones.
+const WIN_W = 0.11, WIN_H = 0.24;
+/** Aura palette (bottom → top): ember red-orange → hot pink → magenta → violet. */
+const AURA: readonly (readonly number[])[] = [[1.0, 0.36, 0.2], [1.0, 0.3, 0.6], [0.86, 0.22, 0.78], [0.5, 0.26, 1.0]];
+const auraColor = (t: number) => {
+  const x = Math.min(0.999, Math.max(0, t)) * (AURA.length - 1), i = Math.floor(x), f = x - i;
+  const a = AURA[i], b = AURA[i + 1];
+  return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+};
+type Face = { cols: number[]; rows: number[] };
+function planTarget(b: Box, budget: CityBudget) {
+  const cells = (len: number) => { const out: number[] = []; for (let i = Math.ceil(-len / 2 / WIN_W); (i + 1) * WIN_W <= len / 2 + 1e-6; i++) out.push((i + 0.5) * WIN_W); return out; };
+  const rows: number[] = []; for (let j = 0; (j + 1) * WIN_H <= b.h - 0.05; j++) rows.push((j + 0.5) * WIN_H);
+  const faces: Face[] = [{ cols: cells(b.w), rows }, { cols: cells(b.w), rows }, { cols: cells(b.d), rows }, { cols: cells(b.d), rows }];
+  const windows = faces.reduce((n, f) => n + f.cols.length * f.rows.length, 0);
+  const scale = budget.buildings / CITY_BUDGET.high.buildings; // tier ratio
+  const edges = Math.round(900 + 1500 * scale);
+  const aura = Math.round(1000 + 2600 * scale);
+  return { faces, windows, edges, aura, count: windows + edges + aura };
+}
+type Emit = (x: number, y: number, z: number, sx: number, sy: number, sz: number, c: readonly number[], k: number, size: number, delay: number, kind: number) => void;
+function emitTarget(b: Box, plan: ReturnType<typeof planTarget>, emit: Emit, r: Rand, WARM: readonly number[], GOLD: readonly number[]) {
+  const hw = b.w / 2, hd = b.d / 2;
+  const rise = (y: number) => Math.min(0.95, b.delay + 0.18 * (y / b.h));
+  // Windows: one light per drawn window cell, a hair in front of the façade.
+  const off = 0.006;
+  plan.faces.forEach((f, fi) => {
+    for (const u of f.cols) for (const v of f.rows) {
+      let x: number, z: number;
+      if (fi === 0) { x = b.x + u; z = b.z - hd - off; } else if (fi === 1) { x = b.x + u; z = b.z + hd + off; }
+      else if (fi === 2) { x = b.x - hw - off; z = b.z + u; } else { x = b.x + hw + off; z = b.z + u; }
+      const lit = r() < 0.55;
+      emit(x, v, z, x, 0, z, lit ? (r() < 0.8 ? GOLD : WARM) : [0.45, 0.72, 1.0], lit ? 0.75 + r() * 0.5 : 0.1, 0.03, rise(v) + r() * 0.03, 3);
+    }
+  });
+  // Edges: evenly spaced along the 12 box edges and the floor bands (every second window row).
+  const verts = 4 * b.h, roof = 2 * (b.w + b.d), bands = Math.max(1, Math.floor(b.h / (2 * WIN_H)));
+  const lenTotal = verts + roof * (1 + bands) + roof; // + ground outline
+  const along = (L: number, y: number): [number, number] => {
+    // walk the rectangle perimeter, start at (-hw,-hd)
+    if (L < b.w) return [b.x - hw + L, b.z - hd]; L -= b.w;
+    if (L < b.d) return [b.x + hw, b.z - hd + L]; L -= b.d;
+    if (L < b.w) return [b.x + hw - L, b.z + hd]; L -= b.w;
+    return [b.x - hw, b.z + hd - Math.min(L, b.d)];
+  };
+  for (let q = 0; q < plan.edges; q++) {
+    let L = ((q + 0.5) / plan.edges) * lenTotal, x: number, y: number, z: number;
+    if (L < verts) { const c = Math.floor(L / b.h); y = L - c * b.h; x = b.x + (c === 1 || c === 2 ? hw : -hw); z = b.z + (c >= 2 ? hd : -hd); }
+    else {
+      L -= verts; const ring = Math.floor(L / roof); const yy = ring === 0 ? b.h : ring <= bands ? ring * 2 * WIN_H : 0;
+      [x, z] = along(L - ring * roof, yy); y = yy;
+    }
+    emit(x, y, z, x, 0, z, WARM, 1.2 + r() * 0.4, 0.03, rise(y), 5);
+  }
+  // Aura: helical ribbons wrapping the mass just outside the façade, coloured by height.
+  const gap = 0.16, ax = hw + gap, az = hd + gap, per = 4 * (ax + az) / 2 * 2, ribbons = 3, turns = 2.2;
+  const ring = (t: number): [number, number] => {
+    let L = (((t % 1) + 1) % 1) * per;
+    const W = 2 * ax, D = 2 * az;
+    if (L < W) return [b.x - ax + L, b.z - az]; L -= W;
+    if (L < D) return [b.x + ax, b.z - az + L]; L -= D;
+    if (L < W) return [b.x + ax - L, b.z + az]; L -= W;
+    return [b.x - ax, b.z + az - L];
+  };
+  for (let q = 0; q < plan.aura; q++) {
+    const h = r(), rib = q % ribbons;
+    const t = h * turns + rib / ribbons + (r() - 0.5) * 0.012;
+    const [px, pz] = ring(t);
+    const y = h * (b.h + 0.5) - 0.15;
+    const spread = gauss(r) * 0.035;
+    const x = px + spread, z = pz + gauss(r) * 0.035;
+    const c = auraColor(y / (b.h + 0.4) + (r() - 0.5) * 0.12);
+    emit(x, Math.max(0.02, y + gauss(r) * 0.03), z, b.x + (px - b.x) * 2.2, 0, b.z + (pz - b.z) * 2.2, c, 0.9 + r() * 0.9, 0.034 + Math.pow(r(), 3) * 0.05, Math.min(0.95, 0.8 + 0.12 * h), 6);
+  }
 }
 
 /** Atmosphere cap + orbital ring, in planet units (Earth radius = 1, local +y = descent normal). */

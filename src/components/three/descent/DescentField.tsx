@@ -64,7 +64,8 @@ void main(){
   float isEdge=step(1.5,kind)*step(kind,2.5)+step(4.5,kind);
   p+=flow3(position*0.32+vec3(0.0,uTime*0.05,aParams.w))*(mid*mix(0.3,0.09,isEdge)*isB+(1.0-e)*0.25*(1.0-isB))*(1.0-uSettle*0.85);
   // Dust keeps a faint breath after settling.
-  if(kind>3.5) p+=flow3(position*0.15+vec3(uTime*0.02))*0.35;
+  // (Only dust, kind 4 — the featured mass's edges/aura, kinds 5/6, must stay on the building.)
+  if(kind>3.5&&kind<4.5) p+=flow3(position*0.15+vec3(uTime*0.02))*0.35;
   float vis = kind<0.5 ? mix(0.45,1.0,e) : kind<1.5 ? smoothstep(0.0,0.2,e) : smoothstep(0.0,0.12,e);
   // Energy trails: in-flight particles glow, then calm down as geometry stabilises.
   float energy=1.0+mid*(isB*2.2+0.6)*(1.0-uSettle*0.7);
@@ -73,7 +74,7 @@ void main(){
   vec4 mv=modelViewMatrix*vec4(p,1.0);
   float fog=exp(-max(0.0,-mv.z-6.0)*uFog);
   // Traffic shimmer on roads (ambient only).
-  float tw = kind<0.5 ? 0.82+0.18*sin(uTime*2.3+aParams.w*7.0) : 1.0;
+  float tw = kind<0.5 ? 0.82+0.18*sin(uTime*2.3+aParams.w*7.0) : kind>5.5 ? 0.7+0.3*sin(uTime*1.6+aParams.w*5.0) : 1.0;
   emitPoint(mv,aParams.x*uScale,aColor*energy*tw,vis*fog*uCity);
   vAlpha=max(vAlpha,uFloor*vis*uCity*step(kind,0.5));
 }`;
