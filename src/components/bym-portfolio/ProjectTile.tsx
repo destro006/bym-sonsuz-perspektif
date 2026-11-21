@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import {navigateShared} from '@/lib/viewTransition';
 import Image from 'next/image';
 import {useRef} from 'react';
 import {motion,useMotionValue,useScroll,useSpring,useTransform} from 'framer-motion';
@@ -18,6 +20,9 @@ const GLIDE=[0.16,1,0.3,1] as const;
  */
 export function ProjectTile({project:x,index:i,reduced}:{project:BYMProject;index:number;reduced:boolean}){
  const ref=useRef<HTMLElement>(null);
+ const router=useRouter();
+ const href=`/projeler/${x.slug}`;
+ const vt=`proje-${x.slug}`;
  const {scrollYProgress}=useScroll({target:ref,offset:['start end','end start']});
  const imgY=useTransform(scrollYProgress,[0,1],['-6%','6%']);
  const panelY=useTransform(scrollYProgress,[0,1],[46,-46]);
@@ -44,8 +49,9 @@ export function ProjectTile({project:x,index:i,reduced}:{project:BYMProject;inde
   initial={reduced?false:'hidden'} whileInView='show' viewport={vp} exit={{scale:.96}}
   variants={{hidden:{y:110,scale:.94},show:{y:0,scale:1,transition:t(0)}}}>
   <motion.div className="st-tile-tilt" style={reduced?undefined:{rotateX:srx,rotateY:sry,transformPerspective:1600}} onPointerMove={onMove} onPointerLeave={()=>{rx.set(0);ry.set(0);}}>
-   <Link href={`/projeler/${x.slug}`} className="st-tile-link" aria-label={`${x.name} projesini incele`}>
-    <motion.div className="st-tile-frame" variants={V.frame}>
+   <Link href={href} className="st-tile-link" aria-label={`${x.name} projesini incele`}
+    onClick={e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0)return;e.preventDefault();navigateShared(h=>router.push(h),href,vt);}}>
+    <motion.div className="st-tile-frame" variants={V.frame} style={{viewTransitionName:vt} as React.CSSProperties}>
      <motion.div className="st-tile-img" style={reduced?undefined:{y:imgY}}>
       <Image src={x.hero} alt={`${x.name} proje görseli`} fill sizes="(max-width: 860px) 100vw, 60vw" quality={85} style={{objectPosition:x.heroPos??'center'}}/>
      </motion.div>
@@ -55,7 +61,6 @@ export function ProjectTile({project:x,index:i,reduced}:{project:BYMProject;inde
     <motion.span className="st-tile-arrow lux-glass" variants={V.arrow}><ArrowSwap size={18}/></motion.span>
     <motion.div className="st-tile-panel-wrap" style={reduced?undefined:{y:panelY}}>
      <motion.div className="st-tile-panel lux-glass" variants={V.panel} style={{transformPerspective:1200,transformOrigin:'50% 100%'}}>
-      <span className="st-tile-num">{pad(i+1)}</span>
       <div className="st-tile-txt">
        <span className="st-small">{x.kicker}</span>
        <h3>{x.name}</h3>

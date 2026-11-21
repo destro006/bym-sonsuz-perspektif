@@ -7,6 +7,7 @@ import gsap from 'gsap';
 import {Scene,type Quality} from '@/components/three/Scene';
 import {SiteHud} from '@/components/ui/SiteHud';
 import {HomeChapters,scrollToChapter,type ChapterId} from '@/components/ui/HomeChapters';
+import {ExhibitNav,type ExhibitKey} from '@/components/ui/ExhibitNav';
 import {chapterAt} from '@/lib/chapters';
 import {smooth} from '@/lib/math';
 import Link from 'next/link';
@@ -43,7 +44,11 @@ export default function Experience(){
   el.style.setProperty('--nav',nav.toFixed(3));
   for(let k=0;k<6;k++)el.style.setProperty('--n'+k,smooth(0.806+k*0.009,0.836+k*0.009,p).toFixed(3));
   const navOn=nav>0.5;
-  if((el.dataset.nav==='1')!==navOn)el.dataset.nav=navOn?'1':'0';
+  if((el.dataset.nav==='1')!==navOn){
+   el.dataset.nav=navOn?'1':'0';
+   // The floating exhibition nav stays hidden through the opening and appears at the hand-off.
+   document.documentElement.dataset.exnav=navOn?'1':'0';
+  }
   const on=arch>0.5;
   if((el.dataset.arch==='1')!==on){
    el.dataset.arch=on?'1':'0';
@@ -147,6 +152,7 @@ export default function Experience(){
     </div>
    </section>
    <div id="sonraki-adim"><HomeChapters active={activeChapter} onActive={onActive}/></div>
+   <ExhibitNav mode="home" className="exnav-home" active={activeChapter==='deneyim'?null:activeChapter as ExhibitKey} onSelect={k=>scrollToChapter(k,isReducedMotion)}/>
   </main>
  </>;
 }

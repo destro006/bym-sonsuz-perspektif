@@ -7,6 +7,7 @@ import {useEffect,useRef,useState,type ReactNode} from 'react';
 import {AnimatePresence,motion,useMotionValue,useReducedMotion,useScroll,useSpring,useTransform} from 'framer-motion';
 import {Icon} from './Icon';
 import {ArrowSwap} from './ArrowSwap';
+import {viaSharedTransition} from '@/lib/viewTransition';
 
 export const NAV=[
  {href:'/',label:'Deneyim',icon:'orbit'},
@@ -82,7 +83,7 @@ export function Stage({label,media,title,lead,top,left,right,below,scrollTarget=
  return <div className="st-wrap">
   <section ref={ref} className="st-stage" data-stage aria-label={label} onPointerMove={onMove} onPointerLeave={()=>{px.set(0);py.set(0);}}>
    <motion.div className="st-media" style={reduced?undefined:{y:mediaY,x:mx}}>
-    <motion.div className="st-media-reveal" {...(reduced?{}:{initial:{clipPath:'inset(14% 10% 14% 10% round 60px)',scale:1.18},animate:{clipPath:'inset(0% 0% 0% 0% round 0px)',scale:1.04},transition:{duration:1.9,ease:[.16,1,.3,1]}})}>{media}</motion.div>
+    <motion.div className="st-media-reveal" {...(reduced||viaSharedTransition()?{}:{initial:{clipPath:'inset(14% 10% 14% 10% round 60px)',scale:1.18},animate:{clipPath:'inset(0% 0% 0% 0% round 0px)',scale:1.04},transition:{duration:1.9,ease:[.16,1,.3,1]}})}>{media}</motion.div>
    </motion.div>
    <div className="st-shade" aria-hidden="true"/>
 
@@ -129,11 +130,12 @@ export function Stage({label,media,title,lead,top,left,right,below,scrollTarget=
 }
 
 /** Image layer for a stage. Changing `src` wipes the new photo in over the old one. */
-export function StageImage({src,alt,priority,pos}:{src:string;alt:string;priority?:boolean;pos?:string}){
+export function StageImage({src,alt,priority,pos,vt}:{src:string;alt:string;priority?:boolean;pos?:string;vt?:string}){
  const reduced=useReducedMotion();
+ const shared=viaSharedTransition();
  return <AnimatePresence initial={false}>
-  <motion.div key={src} className="st-img" initial={reduced?{opacity:0}:{clipPath:'inset(0% 0% 0% 100%)'}} animate={reduced?{opacity:1}:{clipPath:'inset(0% 0% 0% 0%)'}} exit={{zIndex:0,scale:.94,transition:{duration:1.4,ease:[.77,0,.18,1]}}} style={{zIndex:1}} transition={{duration:1.4,ease:[.77,0,.18,1]}}>
-   <motion.div className="st-img-zoom" initial={reduced?false:{scale:1.16}} animate={{scale:1}} transition={{duration:2.4,ease:[.16,1,.3,1]}}>
+  <motion.div key={src} className="st-img" data-vt={vt} initial={shared?false:reduced?{opacity:0}:{clipPath:'inset(0% 0% 0% 100%)'}} animate={reduced?{opacity:1}:{clipPath:'inset(0% 0% 0% 0%)'}} exit={{zIndex:0,scale:.94,transition:{duration:1.4,ease:[.77,0,.18,1]}}} style={{zIndex:1,viewTransitionName:vt} as React.CSSProperties} transition={{duration:1.4,ease:[.77,0,.18,1]}}>
+   <motion.div className="st-img-zoom" initial={reduced||shared?false:{scale:1.16}} animate={{scale:1}} transition={{duration:2.4,ease:[.16,1,.3,1]}}>
     <Image src={src} alt={alt} fill priority={priority} sizes="100vw" quality={88} style={{objectFit:'cover',objectPosition:pos??'center'}}/>
    </motion.div>
   </motion.div>

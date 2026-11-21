@@ -88,7 +88,7 @@ export function ProjectsExperience(){
 
   <section id="portfoy" className="st-section" aria-labelledby="portfoy-baslik">
    <div className="st-section-head">
-    <div><span className="st-kicker">02 / PORTFÖY</span><h2 id="portfoy-baslik" className="st-h2">İz bırakan <em>projeler.</em></h2></div>
+    <div><span className="st-kicker">PORTFÖY</span><h2 id="portfoy-baslik" className="st-h2">İz bırakan <em>projeler.</em></h2></div>
     <div className="st-chips" role="group" aria-label="Proje kategorisi">{BYM_CATEGORIES.map(c=><button key={c} type="button" aria-pressed={cat===c} className={cat===c?'active':undefined} onClick={()=>setCat(c)}>{c}{cat===c && <motion.span layoutId="st-chip" className="st-chip-bg" transition={{type:'spring',stiffness:380,damping:32}}/>}</button>)}</div>
    </div>
    <motion.div layout={!reduced} className="st-tiles">

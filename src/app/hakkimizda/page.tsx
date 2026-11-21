@@ -30,7 +30,7 @@ export default function About(){
    </>}
    right={<>
     <span className="st-small">DEĞERLERİMİZ</span>
-    <ul className="st-list">{COMPANY.values.map((v,i)=><li key={v.title}><span>0{i+1}</span><div><strong>{v.title}</strong><p className="st-card-text" style={{marginTop:4}}>{v.text}</p></div></li>)}</ul>
+    <ul className="st-list">{COMPANY.values.map(v=><li key={v.title}><div><strong>{v.title}</strong><p className="st-card-text" style={{marginTop:4}}>{v.text}</p></div></li>)}</ul>
    </>}
    scrollTarget="#hikaye"
   />
@@ -41,13 +41,13 @@ export default function About(){
   </section>
 
   <section className="st-section">
-   <div className="st-cards">{COMPANY.values.map((v,i)=><Rise key={v.title} delay={i*.1} as="article" className="st-card"><span className="st-num">0{i+1}</span><h3>{v.title}</h3><p>{v.text}</p></Rise>)}</div>
+   <div className="st-cards">{COMPANY.values.map((v,i)=><Rise key={v.title} delay={i*.1} as="article" className="st-card"><h3>{v.title}</h3><p>{v.text}</p></Rise>)}</div>
   </section>
 
   <LayeredFeature src={asset("/assets/bym-portfolio-curated/gaziantep-villalari/villa-facade.webp")} alt="Gaziantep villa projesi cephe ve bahçe görseli" tall>
    <span className="st-kicker">ÇALIŞMA ALANLARIMIZ</span>
    <h2 className="st-h3">Tasarım ve yapım, <em>tek bir bakışta.</em></h2>
-   <ul className="st-list">{SERVICES.slice(0,4).map(s=><li key={s.num}><span>{s.num}</span>{s.title}</li>)}</ul>
+   <ul className="st-list">{SERVICES.slice(0,4).map(s=><li key={s.num}>{s.title}</li>)}</ul>
    <Link href="/hizmetler" className="st-btn">Bütün hizmetler<span className="st-btn-dot"><ArrowSwap size={14}/></span></Link>
   </LayeredFeature>
  </SiteShell>;

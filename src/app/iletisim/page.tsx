@@ -1,5 +1,6 @@
 import {asset} from '@/lib/asset';
 import Link from 'next/link';
+import Image from 'next/image';
 import type {Metadata} from 'next';
 import {SiteShell} from '@/components/bym-portfolio/SiteShell';
 import {Stage,StageImage,StageMeta} from '@/components/bym-portfolio/Stage';
@@ -35,8 +36,10 @@ export default function Contact(){
    scrollTarget="#form"
   />
 
-  <section id="form" className="st-section st-contact">
-   <Rise className="st-contact-info">
+  <section id="form" className="st-section st-contact ex-contact">
+   {/* Architectural backdrop behind the glass contact interface. */}
+   <div className="ex-contact-bg" aria-hidden="true"><Image src={asset("/assets/bym-portfolio-curated/ruya-sehir/ruya-hero.webp")} alt="" fill sizes="100vw" quality={80} style={{objectPosition:'center 35%'}}/></div>
+   <Rise className="st-contact-info ex-glass ex-glass-dark">
     <span className="st-kicker st-kicker-light">BYM İNŞAAT / İLETİŞİM</span>
     <h2 className="st-h3">Birlikte <em>başlayalım.</em></h2>
     <span className="st-small" style={{color:'rgba(247,244,238,.6)'}}>DOĞRUDAN E-POSTA</span>
@@ -45,7 +48,7 @@ export default function Contact(){
     <a className="big" href={COMPANY.originalWebsite} target="_blank" rel="noreferrer">byminsaat.com.tr ↗</a>
     <Link href="/projeler" className="st-btn st-btn-light" style={{marginTop:'auto',alignSelf:'flex-start'}}>Projelerimizi inceleyin<span className="st-btn-dot"><ArrowSwap size={14}/></span></Link>
    </Rise>
-   <Rise className="st-contact-form" delay={.12}>
+   <Rise className="st-contact-form ex-glass" delay={.12}>
     <span className="st-kicker">MESAJINIZI BIRAKIN</span>
     <h2 className="st-h3">Projenizi <em>anlatın.</em></h2>
     <ContactForm/>

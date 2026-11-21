@@ -28,7 +28,7 @@ export default async function ProjectDetail({params}:Props){
  const second=project.images[1]??project.images[0];
  return <SiteShell>
   <Stage label={`${project.name} projesi`}
-   media={<StageImage src={project.hero} alt={project.images[0].alt} pos={project.heroPos} priority/>}
+   media={<StageImage src={project.hero} alt={project.images[0].alt} pos={project.heroPos} priority vt={`proje-${project.slug}`}/>}
    title={<Lines l={[project.name]}/>}
    lead={<p>{project.intro}</p>}
    top={<StageMeta items={[{icon:'grid',label:'Kategori',value:project.category},{icon:'pin',label:'Konum',value:project.location},{icon:'image',label:'Görsel',value:`${project.images.length} görünüm`}]}/>}
@@ -37,14 +37,14 @@ export default async function ProjectDetail({params}:Props){
     <Link href="/projeler" className="st-back"><Icon name="prev" size={14}/>Tüm projeler</Link>
     <h2 className="st-card-title">Proje görselleri</h2>
     <div className="st-card-row">
-     <div className="st-count"><strong>{pad(project.images.length)}</strong><span>Görünüm</span></div>
+     <div className="st-count"><strong>{project.images.length}</strong><span>Görünüm</span></div>
      <div className="st-avatars" aria-hidden="true">{project.images.slice(1,4).map(x=><span key={x.src}><Image src={x.src} alt="" fill sizes="44px"/></span>)}</div>
      <a href="#galeri" className="st-round" aria-label="Galeriye in"><ArrowSwap size={16}/></a>
     </div>
    </>}
    right={<>
     <div className="st-card-head">
-     <div><span className="st-small">{pad(idx+1)} / {pad(BYM_PROJECTS.length)} · {project.kicker}</span><h2 className="st-card-title" style={{marginTop:8}}>{project.name}</h2><p className="st-card-loc"><Icon name="pin" size={13}/>{project.location}</p></div>
+     <div><span className="st-small">{project.kicker}</span><h2 className="st-card-title" style={{marginTop:8}}>{project.name}</h2><p className="st-card-loc"><Icon name="pin" size={13}/>{project.location}</p></div>
     </div>
     <p className="st-card-text">{project.description}</p>
     <ul className="st-specs">{project.notes.map(n=><li key={n}><Icon name="spark" size={14}/>{n}</li>)}</ul>

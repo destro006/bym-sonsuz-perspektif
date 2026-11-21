@@ -1,0 +1,140 @@
+/* ═════════════ Architectural Spatial Luxury — design tokens & shared components ═════════════
+   Loaded last. Overrides colour/typography tokens of the existing layers and adds the floating
+   exhibition navigation and the physically inspired glass material. 3D scenes are untouched. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+
+:root{
+ --ex-anthracite:#101216; --ex-titanium:#25282D; --ex-rose:#C5A58A; --ex-champagne:#DBC8A7; --ex-ivory:#F4F1EB;
+ --ex-rose-ink:#8A6B52;            /* rose gold dark enough for small text on ivory (≈4.6:1) */
+ --ex-ink:#101216; --ex-ink-2:#3A3D42; --ex-ink-3:#5E6168;
+ --ex-font:'Manrope','Helvetica Neue',Arial,sans-serif;
+ --ex-ease:cubic-bezier(.22,1,.36,1);
+ --ex-space-1:8px; --ex-space-2:16px; --ex-space-3:24px; --ex-space-4:40px; --ex-space-5:64px; --ex-space-6:clamp(80px,10vw,150px);
+ --ex-metal:linear-gradient(135deg,#FBF8F2 0%,#C5A58A 20%,rgba(255,255,255,.35) 42%,#DBC8A7 64%,#A88A72 86%,#F4F1EB 100%);
+ --stone:#F4F1EB;
+}
+
+/* ---------- tokens into the existing layers ---------- */
+.st-site{
+ --frame:#F4F1EB; --cream:#FBF9F5; --ivory:#F4F1EB; --charcoal:#101216; --muted:#5E6168;
+ --champagne:#C5A58A; --champ-deep:#8A6B52; --line:rgba(16,18,22,.12);
+ --serif:var(--ex-font); --sans:var(--ex-font);
+}
+.landing-shell{
+ --display:var(--ex-font); --serif:var(--ex-font); --sans:var(--ex-font);
+ --jn-surface:#F4F1EB; --jn-surface-2:#ECE6DC; --jn-ink:#101216; --jn-ink-2:#25282D; --jn-ink-3:#5E6168; --jn-gold:#8A6B52; --jn-gold-soft:#C5A58A;
+ background:#ECE6DC;
+}
+.st-site,.landing-shell{font-family:var(--ex-font);color:var(--ex-ink)}
+
+/* Refined typography: light display weights, tight tracking, one accent colour for emphasis. */
+.st-site .st-title,.st-site .st-h2,.st-site .st-h3,.st-site .st-card-title,.st-site .hc-contact-title,
+.st-site .st-footer-title,.st-site .st-next-title,.st-site .st-tile-txt h3{
+ font-family:var(--ex-font)!important;font-weight:300;letter-spacing:-.035em;
+}
+.st-site .st-h2{font-size:clamp(40px,5.2vw,84px);line-height:1.02}
+.st-site .st-h3{font-size:clamp(30px,3.4vw,54px);line-height:1.06}
+.st-site .st-card-title{font-weight:400;letter-spacing:-.02em}
+.st-site em,.landing-shell em{font-style:normal;color:var(--ex-rose-ink);font-weight:300}
+.st-site .st-title em,.st-site .st-kicker-light,.st-site .st-footer-title em,.st-site .hc-contact-title em{color:var(--ex-champagne)}
+.st-site .st-kicker{font:600 11px/1 var(--ex-font);letter-spacing:.28em;color:var(--ex-rose-ink)}
+.st-site .st-card-text,.st-site .st-body{color:var(--ex-ink-2);line-height:1.75}
+
+/* Buttons: anthracite capsule with a rose-gold metallic dot. */
+.st-site .st-btn{background:var(--ex-anthracite);color:var(--ex-ivory);font:500 13px/1 var(--ex-font);letter-spacing:.02em}
+.st-site .st-btn-dot{background:var(--ex-metal);color:var(--ex-anthracite)}
+.st-site .st-btn-light{background:var(--ex-ivory);color:var(--ex-anthracite)}
+
+/* Decorative numbering is not part of the exhibition language. */
+.st-site .st-tile-num,.st-site .st-num,.st-site .st-counter,.st-site .st-list li>span:first-child:not(:only-child){display:none!important}
+
+/* ---------- glass material ----------
+   ~15% ivory fill, backdrop lift for contrast, metallic hairline edge, bevel and a soft reflection.
+   Blur stays moderate (16–20px) for mobile GPUs. */
+.ex-glass,.exnav-glass,
+.st-site .st-card-glass.lux-glass,.st-site .st-layer-card.lux-glass,.st-site .lux-glass-dark,.st-site .st-tile-panel.lux-glass{
+ position:relative;
+ background:
+  linear-gradient(115deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.10) 100%),
+  rgba(244,241,235,.15);
+ -webkit-backdrop-filter:blur(18px) saturate(135%) brightness(1.14);backdrop-filter:blur(18px) saturate(135%) brightness(1.14);
+ border:1px solid rgba(255,255,255,.28);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -1px 0 rgba(16,18,22,.14),inset 1px 0 0 rgba(255,255,255,.22),
+  0 30px 60px -34px rgba(16,18,22,.55),0 2px 8px rgba(16,18,22,.06);
+}
+.ex-glass::before,.exnav-glass::before{
+ content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+ background:var(--ex-metal);opacity:.85;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+ mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+}
+/* Dark variant (over bright photography): anthracite tint instead of a lift. */
+.ex-glass-dark,.st-site .lux-glass-dark{
+ background:linear-gradient(115deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 35%),rgba(16,18,22,.42);
+ -webkit-backdrop-filter:blur(18px) saturate(120%) brightness(.8);backdrop-filter:blur(18px) saturate(120%) brightness(.8);
+ color:var(--ex-ivory);
+}
+/* Over light page backgrounds the tile panel needs a denser fill to keep text crisp. */
+.st-site .st-tile-panel.lux-glass{background:linear-gradient(115deg,rgba(255,255,255,.5),rgba(255,255,255,.18) 40%),rgba(244,241,235,.72)}
+
+/* ---------- floating exhibition navigation ---------- */
+.exnav{position:fixed;z-index:80;top:18px;left:50%;transform:translateX(-50%);transition:opacity .7s var(--ex-ease),transform .7s var(--ex-ease)}
+.exnav-glass{display:flex;gap:2px;padding:6px;border-radius:999px;
+ background:linear-gradient(115deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 45%,rgba(255,255,255,.22) 100%),rgba(244,241,235,.15)}
+.exnav-item{position:relative;display:flex;align-items:center;justify-content:center;height:42px;padding:0 20px;border-radius:999px;
+ font:500 13.5px/1 var(--ex-font);letter-spacing:.01em;color:var(--ex-ink);text-decoration:none;white-space:nowrap;
+ transition:color .3s var(--ex-ease)}
+.exnav-item:hover:not(.on){color:var(--ex-rose-ink)}
+.exnav-item:focus-visible{outline:2px solid var(--ex-rose);outline-offset:2px}
+.exnav-label{position:relative;z-index:1}
+/* Active indicator: ivory capsule, metallic hairline, a notch cut from its top edge and a rose pip. */
+.exnav-ind{position:absolute;inset:0;border-radius:999px;
+ background:linear-gradient(180deg,#FDFBF7,#EFE8DD);
+ box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(197,165,138,.55),0 0 0 1px rgba(197,165,138,.6),0 8px 18px -10px rgba(16,18,22,.5);
+ -webkit-mask:radial-gradient(circle 6px at 50% 0,transparent 96%,#000 100%);mask:radial-gradient(circle 6px at 50% 0,transparent 96%,#000 100%)}
+.exnav-ind::after{content:'';position:absolute;left:50%;bottom:6px;width:14px;height:2px;margin-left:-7px;border-radius:2px;background:linear-gradient(90deg,#C5A58A,#DBC8A7)}
+/* Homepage: hidden during the cosmic opening, revealed at the architectural hand-off. */
+html:not([data-exnav="1"]) .exnav-home{opacity:0;pointer-events:none;transform:translate(-50%,-18px)}
+@media(max-width:700px){
+ .exnav{top:74px;width:calc(100% - 24px)}
+ .exnav-glass{justify-content:space-between;padding:4px}
+ .exnav-item{flex:1 1 auto;height:38px;padding:0 8px;font-size:12px}
+ .exnav-ind::after{bottom:4px}
+}
+
+/* The exhibition nav replaces the earlier per-page navigation systems. */
+.landing-shell .jn-tc,.st-site .st-notch-tc,.st-site .st-notch-rail,.st-site .st-menu-btn,.landing-shell .menu-btn{display:none!important}
+
+/* ---------- İletişim: architectural backdrop + glass interface ---------- */
+.st-site .ex-contact{position:relative;isolation:isolate;padding:clamp(14px,3vw,48px);border-radius:var(--stage-r);overflow:hidden}
+.ex-contact-bg{position:absolute;inset:0;z-index:-1}
+.ex-contact-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,18,22,.28),rgba(16,18,22,.58))}
+.st-site .ex-contact .st-contact-info,.st-site .ex-contact .st-contact-form{border-radius:36px}
+.st-site .ex-contact .st-contact-form{color:var(--ex-ink)}
+.st-site .ex-contact .st-contact-form input,.st-site .ex-contact .st-contact-form textarea,.st-site .ex-contact .st-contact-form select{
+ background:rgba(255,255,255,.55);border-color:rgba(16,18,22,.14)}
+
+/* ---------- shared-element transitions (project tile → detail) ---------- */
+::view-transition-group(*){animation-duration:.9s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.5s}
+
+@media(prefers-reduced-motion:reduce){
+ .exnav,.exnav-item{transition:none}
+ ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+}
+
+/* Text-bearing glass over photography: same ~15% fill, stronger backdrop lift so dark copy keeps
+   its contrast against bright or busy façades. */
+.st-site .st-layer-card.lux-glass,.st-site .st-card-glass.lux-glass,.landing-shell .ah-glass{
+ background:
+  linear-gradient(115deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.10) 100%),
+  rgba(244,241,235,.15);
+ -webkit-backdrop-filter:blur(22px) saturate(110%) brightness(1.34);backdrop-filter:blur(22px) saturate(110%) brightness(1.34);
+ border:1px solid rgba(255,255,255,.32);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(16,18,22,.14),0 0 0 1px rgba(197,165,138,.35),0 30px 60px -34px rgba(16,18,22,.55);
+}
+.st-site .st-layer-card .st-card-text,.st-site .st-card-glass .st-card-text,.landing-shell .ah-glass p{color:var(--ex-titanium)}
+
+/* Anchored sections land below the floating navigation. */
+[id^="bolum-"],#form,#portfoy,#galeri,#hikaye{scroll-margin-top:84px}
+@media(max-width:700px){[id^="bolum-"],#form,#portfoy,#galeri,#hikaye{scroll-margin-top:128px}}

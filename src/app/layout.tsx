@@ -3,6 +3,7 @@ import './globals.css';
 import '../styles/bym-portfolio.css';
 import '../styles/bym-stage.css';
 import '../styles/bym-journey.css';
+import '../styles/exhibit.css';
 
 export const metadata: Metadata = {
   title: 'BYM İnşaat | Sonsuz Perspektif',
