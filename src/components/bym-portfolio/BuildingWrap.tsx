@@ -55,7 +55,7 @@ export function BuildingWrap({progress,stage,title='.st-title',img='.st-img img'
    const off=document.createElement('canvas');off.width=Math.max(1,Math.ceil(tr.width));off.height=Math.max(1,Math.ceil(tr.height));
    const o=off.getContext('2d');if(!o)return;
    o.fillStyle='#fff';o.textBaseline='alphabetic';
-   const words=[...el.querySelectorAll<HTMLElement>('.lux-word')];
+   const words=[...el.querySelectorAll<HTMLElement>('.lux-word, .fj-w > span')];
    (words.length?words:[el]).forEach(w=>{
     const r=w.getBoundingClientRect(),cs=getComputedStyle(w);
     o.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;

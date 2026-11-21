@@ -151,3 +151,8 @@ html:not([data-exnav="1"]) .exnav-home{opacity:0;pointer-events:none;transform:t
 /* Secondary stages: the particles must be visible where they are born (the card headline),
    so they sit above the glass card; the canvas is clipped to the photo's rounded frame. */
 .st-site .st-layer>.st-wrap-particles{z-index:4;border-radius:var(--stage-r)}
+/* Homepage chapter wraps. */
+.st-site .hc-wrap,.st-site .hc-contact,.fj-stage{position:relative}
+.st-site .hc-wrap>.st-wrap-particles{z-index:4}
+.st-site .hc-contact>.st-wrap-particles{z-index:4;border-radius:inherit}
+.fj-stage>.st-wrap-particles{z-index:5}

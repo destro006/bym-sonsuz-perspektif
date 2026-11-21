@@ -2,8 +2,9 @@
 import {asset} from '@/lib/asset';
 import Link from 'next/link';
 import Image from 'next/image';
-import {useEffect,useState} from 'react';
-import {AnimatePresence,motion,useReducedMotion} from 'framer-motion';
+import {useEffect,useRef,useState} from 'react';
+import {AnimatePresence,motion,useReducedMotion,useScroll} from 'framer-motion';
+import {BuildingWrap} from '@/components/bym-portfolio/BuildingWrap';
 import {BYM_PROJECTS,COMPANY,PRESS} from '@/data/bym-portfolio';
 import {ProjectTile} from '@/components/bym-portfolio/ProjectTile';
 import {LayeredFeature,Rise} from '@/components/bym-portfolio/Layered';
@@ -41,6 +42,10 @@ function Head({kicker,lines,href,cta}:{kicker:string;lines:string[];href:string;
  */
 export function HomeChapters({active,onActive}:{active:ChapterId;onActive:(id:ChapterId)=>void}){
  const reduced=!!useReducedMotion();
+ // Particle wraps for the remaining chapters (pure functions of each section's scroll progress).
+ const projRef=useRef<HTMLElement>(null), contactRef=useRef<HTMLDivElement>(null);
+ const {scrollYProgress:projP}=useScroll({target:projRef,offset:['start end','start 12%']});
+ const {scrollYProgress:contactP}=useScroll({target:contactRef,offset:['start end','center center']});
  useEffect(()=>{
   const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting)onActive((e.target as HTMLElement).dataset.chapter as ChapterId);},{rootMargin:'-48% 0px -48% 0px'});
   document.querySelectorAll('[data-chapter]').forEach(el=>io.observe(el));
@@ -50,7 +55,8 @@ export function HomeChapters({active,onActive}:{active:ChapterId;onActive:(id:Ch
  return <div className="st-site home-chapters">
   <ServiceJourney id="bolum-fikirden-yapiya" chapter="fikirden-yapiya" kicker="FİKİRDEN YAPIYA"/>
 
-  <section id="bolum-projeler" data-chapter="projeler" className="st-section hc-chapter" aria-label="Projeler">
+  <section ref={projRef} id="bolum-projeler" data-chapter="projeler" className="st-section hc-chapter hc-wrap" aria-label="Projeler">
+   <BuildingWrap progress={projP} stage={projRef} title=".st-h2" img=".st-tile:first-child .st-tile-img img"/>
    <Head kicker="PROJELER" lines={['İz bırakan','*projeler.*']} href="/projeler" cta="Tüm projeler"/>
    <div className="st-tiles hc-tiles">{projects.map((p,i)=><ProjectTile key={p.slug} project={p} index={i} reduced={reduced}/>)}</div>
   </section>
@@ -66,7 +72,8 @@ export function HomeChapters({active,onActive}:{active:ChapterId;onActive:(id:Ch
   </section>
 
   <section id="bolum-iletisim" data-chapter="iletisim" className="st-section hc-chapter" aria-label="İletişim">
-   <motion.div className="hc-contact" initial={reduced?false:{clipPath:'inset(12% 8% 12% 8% round 64px)'}} whileInView={{clipPath:'inset(0% 0% 0% 0% round 44px)'}} viewport={{once:true,amount:.25}} transition={{duration:1.5,ease:[.16,1,.3,1]}}>
+   <motion.div ref={contactRef} className="hc-contact" initial={reduced?false:{clipPath:'inset(12% 8% 12% 8% round 64px)'}} whileInView={{clipPath:'inset(0% 0% 0% 0% round 44px)'}} viewport={{once:true,amount:.25}} transition={{duration:1.5,ease:[.16,1,.3,1]}}>
+    <BuildingWrap progress={contactP} stage={contactRef} title=".hc-contact-title" img=".hc-contact-img img"/>
     <div className="hc-contact-img"><Image src={asset("/assets/bym-portfolio-curated/gaziantep-villalari/villa-hero.webp")} alt="" fill sizes="100vw" quality={80}/></div>
     <div className="hc-contact-body lux-glass-dark">
      <span className="st-kicker st-kicker-light">İLETİŞİM</span>
