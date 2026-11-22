@@ -159,3 +159,21 @@ html:not([data-exnav="1"]) .exnav-home{opacity:0;pointer-events:none;transform:t
 @media (min-width:861px){
  .landing-shell .jn-tl{padding:var(--jg) var(--jg) var(--jg) var(--jg)}
 }
+
+/* Intro arch title: the accent line inherited the dark rose ink meant for ivory paper and
+   disappeared on the photograph. Light champagne + a soft dark halo keeps both lines legible. */
+.landing-shell .ah-title{color:#fff;text-shadow:0 2px 6px rgba(8,10,18,.45),0 4px 40px rgba(8,10,18,.55)}
+.landing-shell .ah-title em{color:#F3D3C3;text-shadow:0 2px 6px rgba(8,10,18,.6),0 4px 34px rgba(8,10,18,.7)}
+
+/* Stage frame: keep the dark stage background inside the ivory ring so it cannot bleed as a
+   hairline along the rounded corners (visible beside the logo notch). */
+.landing-shell .stage-sticky{background-clip:padding-box}
+/* The notches and the stage are clipped by the same rounded edge; at their anti-aliased seam the dark
+   stage background showed through as a hairline. Under the logo notch (top-left) the stage background
+   is ivory, so the seam blends ivory into ivory. Everything else keeps the dark background. */
+@media (min-width:861px){
+ .landing-shell .stage-sticky{background:linear-gradient(var(--jn-surface),var(--jn-surface)) 0 0/120px 90px no-repeat,#080d19;background-clip:padding-box}
+ /* The 3D canvas and the dark vignette are clipped by the same curve; keep them out of the corner
+    hidden under the logo notch so their anti-aliased edge cannot bleed through. */
+ .landing-shell .stage-sticky>div:first-child,.landing-shell .stage-sticky::after{clip-path:polygon(64px 0,100% 0,100% 100%,0 100%,0 64px,64px 64px)}
+}

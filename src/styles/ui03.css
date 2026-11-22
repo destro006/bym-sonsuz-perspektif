@@ -434,3 +434,6 @@ html[data-u3post="1"] .exnav-home{opacity:1;pointer-events:auto;transform:transl
 .u3-track,.u3-floor{pointer-events:none}
 .u3-card-wrap{pointer-events:auto}
 .u3-card-ghost{pointer-events:none}
+/* Header logo keeps its own aspect ratio (a column flexbox would otherwise stretch it). */
+.u3-v-brand{align-items:flex-start}
+.u3-v-brand img{width:auto;max-width:none;object-fit:contain;flex:none}
