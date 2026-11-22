@@ -1,45 +1,106 @@
 'use client';
 import Link from 'next/link';
-import {useRef} from 'react';
-import {motion,useReducedMotion,useScroll,useTransform} from 'framer-motion';
+import {useEffect,useRef} from 'react';
+import {motion,useMotionValue,useReducedMotion,useSpring,useTransform,type Variants} from 'framer-motion';
+import {gsap} from 'gsap';
+import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {COMPANY} from '@/data/bym-portfolio';
 import {U3_HERO,U3_PENDING,U3_PROJECTS} from '@/data/ui03';
 import {asset} from '@/lib/asset';
 
+if(typeof window!=='undefined')gsap.registerPlugin(ScrollTrigger);
 const EASE=[0.22,1,0.36,1] as const;
 const go=(id:string)=>document.getElementById(id)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+const noMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/*
+ * Controller split (no shared properties):
+ *  - GSAP ScrollTrigger (scrub): `.u3-sc-*` wrappers only — scroll-linked parallax and progress lines.
+ *  - Framer Motion: reveal variants, pointer parallax and everything interactive, on inner/other elements.
+ *  - CSS variables (pointer): glass tilt via `.u3-tilt`.
+ */
 function Reveal({children,delay=0,className}:{children:React.ReactNode;delay?:number;className?:string}){
  const r=!!useReducedMotion();
  return <motion.div className={className} initial={r?false:{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.3}} transition={{duration:.9,delay,ease:EASE}}>{children}</motion.div>;
 }
 
-/** First screen after the protected intro: text on the dark cosmic side, Rüya Şehir photo on the right. */
+/** Interactive frosted glass: pointer sets --rx/--ry (tilt, ≤4°) and --gx/--gy (highlight). Fine pointers only. */
+export function useGlassTilt(root:React.RefObject<HTMLElement|null>){
+ useEffect(()=>{
+  const el=root.current;if(!el||noMotion()||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  let cur:HTMLElement|null=null;
+  const reset=(t:HTMLElement)=>{t.style.setProperty('--rx','0deg');t.style.setProperty('--ry','0deg');t.classList.remove('is-lit');};
+  const move=(e:PointerEvent)=>{
+   const t=(e.target as HTMLElement).closest<HTMLElement>('.u3-tilt');
+   if(cur&&cur!==t)reset(cur);cur=t;if(!t)return;
+   const r=t.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+   const k=Math.min(1,320/Math.max(r.width,r.height)); // large panels tilt less
+   t.style.setProperty('--ry',`${((x-.5)*8*k).toFixed(2)}deg`);t.style.setProperty('--rx',`${((.5-y)*6*k).toFixed(2)}deg`);
+   t.style.setProperty('--gx',`${(x*100).toFixed(1)}%`);t.style.setProperty('--gy',`${(y*100).toFixed(1)}%`);t.classList.add('is-lit');
+  };
+  const leave=()=>{if(cur)reset(cur);cur=null;};
+  el.addEventListener('pointermove',move);el.addEventListener('pointerleave',leave);
+  return()=>{el.removeEventListener('pointermove',move);el.removeEventListener('pointerleave',leave);};
+ },[root]);
+}
+
+/** Scroll-linked parallax / progress for the chapters, one gsap.context, reverted on unmount. */
+export function useChapterScroll(root:React.RefObject<HTMLElement|null>){
+ useEffect(()=>{
+  const el=root.current;if(!el||noMotion())return;
+  const ctx=gsap.context(()=>{
+   gsap.fromTo('.u3-sc-hero',{yPercent:-5},{yPercent:7,ease:'none',scrollTrigger:{trigger:'.u3-hero',start:'top bottom',end:'bottom top',scrub:.6}});
+   gsap.utils.toArray<HTMLElement>('.u3-sc-ph').forEach(ph=>gsap.fromTo(ph,{yPercent:-7},{yPercent:7,ease:'none',scrollTrigger:{trigger:ph.closest('.u3-phase'),start:'top bottom',end:'bottom top',scrub:.6}}));
+   gsap.fromTo('.u3-sc-rail',{scaleY:0},{scaleY:1,ease:'none',scrollTrigger:{trigger:'.u3-phases',start:'top 65%',end:'bottom 65%',scrub:.4}});
+   gsap.fromTo('.u3-sc-orbit',{rotate:-8,yPercent:10},{rotate:8,yPercent:-10,ease:'none',scrollTrigger:{trigger:'#bolum-projeler',start:'top bottom',end:'bottom top',scrub:.8}});
+  },el);
+  // Content heights settle after images decode; keep trigger positions honest.
+  const id=requestAnimationFrame(()=>ScrollTrigger.refresh());
+  return()=>{cancelAnimationFrame(id);ctx.revert();};
+ },[root]);
+}
+
+const heroSeq:Variants={hidden:{},show:{transition:{staggerChildren:.12,delayChildren:.15}}};
+const rise:Variants={hidden:{opacity:0,y:26},show:{opacity:1,y:0,transition:{duration:1,ease:EASE}}};
+const line:Variants={hidden:{y:'110%'},show:{y:'0%',transition:{duration:1.1,ease:EASE}}};
+
+/** Architectural reveal right after the (untouched) cosmic intro: masked title lines, ambient light, photo depth. */
 export function HeroBridge(){
- const ref=useRef<HTMLElement>(null);
  const r=!!useReducedMotion();
- const {scrollYProgress}=useScroll({target:ref,offset:['start end','end start']});
- const y=useTransform(scrollYProgress,[0,1],r?['0%','0%']:['-6%','6%']);
- return <section ref={ref} className="u3-hero" aria-labelledby="u3-hero-t">
-  <motion.picture className="u3-hero-img" style={{y}}>
-   <source media="(max-width: 760px)" srcSet={U3_HERO.mobile}/>
-   <img src={U3_HERO.desktop} alt="Rüya Şehir konut blokları, gün batımında" fetchPriority="high"/>
-  </motion.picture>
+ const mx=useMotionValue(0),my=useMotionValue(0);
+ const sx=useSpring(mx,{stiffness:50,damping:18}),sy=useSpring(my,{stiffness:50,damping:18});
+ const imgX=useTransform(sx,v=>`${v*-1.4}%`),imgY=useTransform(sy,v=>`${v*-1}%`);
+ const glowX=useTransform(sx,v=>`${50+v*18}%`),glowY=useTransform(sy,v=>`${40+v*14}%`);
+ const glow=useTransform([glowX,glowY],([x,y])=>`radial-gradient(42% 52% at ${x} ${y},rgba(231,187,167,.16),rgba(8,13,30,0) 70%)`);
+ return <motion.section className="u3-hero" aria-labelledby="u3-hero-t" initial={r?'show':'hidden'} whileInView="show" viewport={{once:true,amount:.25}}
+  onPointerMove={e=>{if(r||e.pointerType!=='mouse')return;mx.set(e.clientX/innerWidth*2-1);my.set(e.clientY/innerHeight*2-1);}}
+  onPointerLeave={()=>{mx.set(0);my.set(0);}}>
+  <div className="u3-hero-img u3-sc-hero">
+   <motion.picture className="u3-hero-pic" style={{x:imgX,y:imgY}}
+    variants={{hidden:{opacity:0,scale:1.12,clipPath:'inset(8% 0% 8% 30% round 28px)'},show:{opacity:1,scale:1.04,clipPath:'inset(0% 0% 0% 0% round 0px)',transition:{duration:1.8,ease:EASE}}}}>
+    <source media="(max-width: 760px)" srcSet={U3_HERO.mobile}/>
+    <img src={U3_HERO.desktop} alt="Rüya Şehir konut blokları, gün batımında" fetchPriority="high"/>
+   </motion.picture>
+  </div>
   <div className="u3-hero-shade" aria-hidden="true"/>
-  <div className="u3-wrap u3-hero-copy">
-   <Reveal><span className="u3-kicker">BYM İNŞAAT · 2003’TEN BU YANA</span></Reveal>
-   <Reveal delay={.1}><h2 id="u3-hero-t" className="u3-display">Fikirden yapıya,<br/><em>sonsuz perspektif.</em></h2></Reveal>
-   <Reveal delay={.2}><p className="u3-lead">Taahhüt, danışmanlık ve yapı projelendirme alanlarında; planlamadan uygulamaya bütüncül bir yaklaşım.</p></Reveal>
-   <Reveal delay={.3} className="u3-cta-row">
+  <motion.div className="u3-hero-glow" aria-hidden="true" style={{background:glow}}/>
+  <motion.div className="u3-wrap u3-hero-copy" variants={heroSeq}>
+   <motion.span className="u3-kicker" variants={rise}>BYM İNŞAAT · 2003’TEN BU YANA</motion.span>
+   <h2 id="u3-hero-t" className="u3-display">
+    <span className="u3-line"><motion.span variants={line}>Fikirden yapıya,</motion.span></span>
+    <span className="u3-line"><motion.span variants={line}><em>sonsuz perspektif.</em></motion.span></span>
+   </h2>
+   <motion.p className="u3-lead" variants={rise}>Taahhüt, danışmanlık ve yapı projelendirme alanlarında; planlamadan uygulamaya bütüncül bir yaklaşım.</motion.p>
+   <motion.div className="u3-cta-row" variants={rise}>
     <button type="button" className="u3-btn" onClick={()=>go('bolum-projeler')}>Projeleri keşfet <span aria-hidden="true">→</span></button>
     <button type="button" className="u3-btn-ghost" onClick={()=>go('bolum-fikirden-yapiya')}>Hikâyemiz</button>
-   </Reveal>
-  </div>
-  <ul className="u3-wrap u3-features" aria-label="Çalışma alanları">
+   </motion.div>
+  </motion.div>
+  <motion.ul className="u3-wrap u3-features" aria-label="Çalışma alanları" variants={heroSeq}>
    {[['İnşaat','Anahtar teslim yapım'],['Mimari Hizmetler','Tasarım ve projelendirme'],['Peyzaj','Dış mekân düzenlemesi'],['Danışmanlık','Maliyet ve süreç yönetimi']].map(([t,d],k)=>
-    <li key={t} className="u3-glass"><Icon k={k}/><span><b>{t}</b><small>{d}</small></span></li>)}
-  </ul>
- </section>;
+    <motion.li key={t} variants={rise}><div className="u3-glass u3-tilt"><Icon k={k}/><span><b>{t}</b><small>{d}</small></span></div></motion.li>)}
+  </motion.ul>
+ </motion.section>;
 }
 
 function Icon({k}:{k:number}){
@@ -54,13 +115,14 @@ const PHASES=[
  {t:'Yaşam',d:'İnsanı, estetiği ve çevresini birlikte gözeten mekânlar teslim edilir.',img:'/assets/bym-ui03/projects/ruya-sehir/gallery-01.webp',cap:'Rüya Şehir · yerleşke'},
 ];
 
-/** Fikir → Tasarım → Uygulama → Yaşam: mask reveals and a drawn gold line, no invented figures. */
+/** Brand storytelling: Fikir → Tasarım → Uygulama → Yaşam. Mask reveals (Framer), scroll parallax + progress rail (GSAP). */
 export function PhaseStory(){
  const r=!!useReducedMotion();
  return <div className="u3-phases">
+  <span className="u3-rail" aria-hidden="true"><span className="u3-sc-rail"/></span>
   {PHASES.map((p,k)=><article key={p.t} className={`u3-phase${k%2?' is-alt':''}`}>
    <motion.div className="u3-phase-media" initial={r?false:{clipPath:'inset(18% 12% 18% 12% round 28px)',opacity:.4}} whileInView={{clipPath:'inset(0% 0% 0% 0% round 20px)',opacity:1}} viewport={{once:true,amount:.35}} transition={{duration:1.3,ease:EASE}}>
-    {p.img ? <img src={asset(p.img)} alt={p.cap} loading="lazy"/> : <PlanSketch reduced={r}/>}
+    <div className="u3-sc-ph">{p.img ? <img src={asset(p.img)} alt={p.cap} loading="lazy"/> : <PlanSketch reduced={r}/>}</div>
     {p.cap && <span className="u3-phase-cap">{p.cap}</span>}
    </motion.div>
    <div className="u3-phase-copy">
@@ -82,7 +144,7 @@ function PlanSketch({reduced}:{reduced:boolean}){
 export function PendingProjects(){
  return <div className="u3-pending">
   <p className="u3-small">Görsel arşivi doğrulanmayı bekleyen projeler</p>
-  <ul>{U3_PENDING.map(p=><li key={p.id} className="u3-glass"><span className="u3-pending-mark" aria-hidden="true"/>{p.name}<small>Görseller hazırlanıyor</small></li>)}</ul>
+  <ul>{U3_PENDING.map(p=><li key={p.id} className="u3-glass u3-tilt"><span className="u3-pending-mark" aria-hidden="true"/>{p.name}<small>Görseller hazırlanıyor</small></li>)}</ul>
  </div>;
 }
 
@@ -94,25 +156,27 @@ export function AboutBand(){
    <p className="u3-body">{COMPANY.about}</p>
    <Link href="/hakkimizda" className="u3-btn-ghost">Hikâyemiz <span aria-hidden="true">→</span></Link>
   </Reveal>
-  <ul className="u3-values">{COMPANY.values.map((v,k)=><li key={v.title} className="u3-glass"><Reveal delay={k*.08}><b>{v.title}</b><p>{v.text}</p></Reveal></li>)}</ul>
+  <ul className="u3-values">{COMPANY.values.map((v,k)=><li key={v.title}><Reveal delay={k*.08}><div className="u3-glass u3-tilt"><b>{v.title}</b><p>{v.text}</p></div></Reveal></li>)}</ul>
  </div>;
 }
 
 export function ContactBand(){
  const cover=U3_PROJECTS.find(p=>p.id==='villa-2020')?.cover;
  return <div className="u3-wrap">
-  <div className="u3-contact u3-glass">
-   {cover && <img className="u3-contact-img" src={cover} alt="" loading="lazy"/>}
-   <div className="u3-contact-body">
-    <span className="u3-kicker">İLETİŞİM</span>
-    <h2 className="u3-h2">Geleceği birlikte<br/><em>inşa edelim.</em></h2>
-    <a className="u3-mail" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
-    <div className="u3-cta-row">
-     <Link href="/iletisim" className="u3-btn">İletişime geçin <span aria-hidden="true">→</span></Link>
-     <a className="u3-btn-ghost" href={COMPANY.originalWebsite} target="_blank" rel="noreferrer">byminsaat.com.tr ↗</a>
+  <Reveal>
+   <div className="u3-contact u3-glass u3-tilt">
+    {cover && <img className="u3-contact-img" src={cover} alt="" loading="lazy"/>}
+    <div className="u3-contact-body">
+     <span className="u3-kicker">İLETİŞİM</span>
+     <h2 className="u3-h2">Geleceği birlikte<br/><em>inşa edelim.</em></h2>
+     <a className="u3-mail" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+     <div className="u3-cta-row">
+      <Link href="/iletisim" className="u3-btn">İletişime geçin <span aria-hidden="true">→</span></Link>
+      <a className="u3-btn-ghost" href={COMPANY.originalWebsite} target="_blank" rel="noreferrer">byminsaat.com.tr ↗</a>
+     </div>
     </div>
    </div>
-  </div>
+  </Reveal>
   <footer className="u3-foot">
    <span>© {new Date().getFullYear()} BYM İnşaat</span>
    <span>Görseller arşiv kaynaklıdır; yayın onayı beklemektedir.</span>

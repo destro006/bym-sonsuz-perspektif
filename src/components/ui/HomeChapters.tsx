@@ -1,8 +1,8 @@
 'use client';
-import {useEffect} from 'react';
+import {useEffect,useRef} from 'react';
 import {U3_STARS} from '@/data/ui03';
 import {ProjectCarousel} from '@/components/ui03/ProjectCarousel';
-import {AboutBand,ContactBand,HeroBridge,PendingProjects,PhaseStory} from '@/components/ui03/Sections';
+import {AboutBand,ContactBand,HeroBridge,PendingProjects,PhaseStory,useChapterScroll,useGlassTilt} from '@/components/ui03/Sections';
 
 /** Homepage chapters, in the same order as the top navigation. */
 export const HOME_CHAPTERS=[
@@ -28,6 +28,9 @@ function Head({kicker,title,lead}:{kicker:string;title:React.ReactNode;lead?:str
  * chapter crossing the viewport centre; the journey section itself reports "deneyim".
  */
 export function HomeChapters({onActive}:{active:ChapterId;onActive:(id:ChapterId)=>void}){
+ const root=useRef<HTMLDivElement>(null);
+ useChapterScroll(root);
+ useGlassTilt(root);
  useEffect(()=>{
   const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting)onActive((e.target as HTMLElement).dataset.chapter as ChapterId);},{rootMargin:'-48% 0px -48% 0px'});
   document.querySelectorAll('[data-chapter]').forEach(el=>io.observe(el));
@@ -40,7 +43,7 @@ export function HomeChapters({onActive}:{active:ChapterId;onActive:(id:ChapterId
   const io=new IntersectionObserver(([e])=>{document.documentElement.dataset.u3post=e.isIntersecting?'1':'0';},{rootMargin:'0px 0px -60% 0px'});
   io.observe(el);return()=>{io.disconnect();delete document.documentElement.dataset.u3post;};
  },[]);
- return <div className="u3 home-chapters">
+ return <div className="u3 home-chapters" ref={root}>
   <div className="u3-stars" aria-hidden="true" style={{backgroundImage:`url(${U3_STARS})`}}/>
   <HeroBridge/>
 
@@ -50,6 +53,7 @@ export function HomeChapters({onActive}:{active:ChapterId;onActive:(id:ChapterId
   </section>
 
   <section id="bolum-projeler" data-chapter="projeler" className="u3-section" aria-label="Projeler">
+   <div className="u3-orbit u3-sc-orbit" aria-hidden="true"/>
    <Head kicker="ÖNE ÇIKAN PROJELER" title={<>İz bırakan<br/><em>projeler.</em></>} lead="Bir projeye dokunun; yalnızca o projeye ait görsellerle galerisi açılır."/>
    <div className="u3-wrap"><ProjectCarousel/><PendingProjects/></div>
   </section>

@@ -55,3 +55,10 @@ Node.js >= 20.9 gerekir.
 - `ExhibitNav.tsx`: navy restyle + real collapsed menu ≤760px. Nav also shown via `html[data-u3post="1"]` when chapters are on screen (jump/deep-link case; intro untouched).
 - 8 projects without media are listed as "Görseller hazırlanıyor" placeholders, never filled with other photos.
 - Intro files (Scene, three/*, Experience) not modified.
+
+### Concept 03 — cinematic motion upgrade (local)
+- Controllers: GSAP ScrollTrigger scrubs only `.u3-sc-*` wrappers (hero/phase parallax, phase progress rail, project orbit); Framer Motion owns reveals, carousel, pointer parallax and the project view; glass tilt is CSS variables (`.u3-tilt`). No element is written by two controllers.
+- Carousel: spring physics, stage tilt from pointer (≤5°), inner-image parallax, reflection; side cards dimmed with captions hidden.
+- Project view: full-screen shared-element expand (`layoutId u3-img-<id>`), staggered title/facts/navigation, directional clip-path wipes, pointer parallax; page behind recedes (`html[data-u3detail]`). Back/refresh/deep link/Escape supported; carousel position and focus restored.
+- Rüya Şehir figures come from `data/project-facts.json` and are labelled "müşteri onayı beklemektedir".
+- GSAP / immersive-3d-web / awwwards-3d skills were NOT installed in this environment; implemented without them.

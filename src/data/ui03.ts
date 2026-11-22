@@ -22,3 +22,10 @@ export const U3_PENDING:U3Pending[] = raw.filter(p=>!p.gallery.length).map(p=>({
 
 export const U3_HERO = {desktop:asset('/assets/bym-ui03/index/ruya-sehir-hero-desktop.webp'),mobile:asset('/assets/bym-ui03/index/ruya-sehir-hero-mobile.webp')};
 export const U3_STARS = asset('/assets/bym-ui03/overlay/subtle-stars-transparent.png');
+
+import facts from '../../data/project-facts.json';
+/** Rüya Şehir figures transcribed from the client's project file — pending client approval, shown as such. */
+const rv=(facts as {reportedValues:{blocks:number;floorsPerBlock:number;apartments4plus1:number;landDecares:number;amenities:string[]}}).reportedValues;
+export const U3_FACTS:Record<string,{stats:{v:string;l:string}[];tags:string[]}> = {
+ 'ruya-sehir':{stats:[{v:String(rv.blocks),l:'Blok'},{v:String(rv.floorsPerBlock),l:'Kat / blok'},{v:String(rv.apartments4plus1),l:'Adet 4+1 daire'},{v:String(rv.landDecares),l:'Dönüm arsa'}],tags:rv.amenities},
+};
