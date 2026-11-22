@@ -153,3 +153,9 @@ html:not([data-exnav="1"]) .exnav-home{opacity:0;pointer-events:none;transform:t
  /* The architectural title sits below the floating exhibition nav. */
  .landing-shell .ah-title-wrap{padding-top:calc(env(safe-area-inset-top,0px) + 128px)}
 }
+
+/* Logo capsule sat exactly in the stage's rounded corner and its top-left curve was clipped by the
+   stage mask. Inset it by one frame gap on wide screens (container only — the logo file is untouched). */
+@media (min-width:861px){
+ .landing-shell .jn-tl{padding:var(--jg) var(--jg) var(--jg) var(--jg)}
+}
