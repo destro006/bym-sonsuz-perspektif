@@ -19,10 +19,17 @@ export function ProjectCarousel(){
  const [mobile,setMobile]=useState(false);
  const [mounted,setMounted]=useState(false);
  const lastCard=useRef<HTMLButtonElement|null>(null);
- const drag=useRef<number|null>(null);
+ const drag=useRef<{x:number;y:number}|null>(null);
+ const scrollT=useRef(0);
  useEffect(()=>setMounted(true),[]);
  useEffect(()=>{const mq=window.matchMedia('(max-width: 760px)');const f=()=>setMobile(mq.matches);f();mq.addEventListener('change',f);return()=>mq.removeEventListener('change',f);},[]);
 
+ // While the page scrolls, the stage holds still: browsers emit synthetic pointer moves during scroll,
+ // which would otherwise tilt the cards. Any pending swipe is discarded too.
+ useEffect(()=>{const on=()=>{scrollT.current=performance.now();drag.current=null;px.set(0);py.set(0);
+  document.querySelectorAll<HTMLElement>('.u3-card').forEach(c=>{c.style.removeProperty('--mx');c.style.removeProperty('--my');});};
+  addEventListener('scroll',on,{passive:true});return()=>removeEventListener('scroll',on);},[]);
+ const still=()=>performance.now()-scrollT.current<250;
  // Pointer parallax for the whole stage: a few degrees at most, springs back to rest.
  const px=useMotionValue(0),py=useMotionValue(0);
  const sx=useSpring(px,{stiffness:90,damping:20,mass:.6}),sy=useSpring(py,{stiffness:90,damping:20,mass:.6});
@@ -68,9 +75,12 @@ export function ProjectCarousel(){
  };
  return <div className="u3-carousel">
   <div className="u3-stage" onKeyDown={e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);}}
-   onPointerMove={e=>{if(reduced||e.pointerType!=='mouse')return;const r=e.currentTarget.getBoundingClientRect();px.set((e.clientX-r.left)/r.width*2-1);py.set((e.clientY-r.top)/r.height*2-1);}}
+   onPointerMove={e=>{if(reduced||e.pointerType!=='mouse'||still())return;const r=e.currentTarget.getBoundingClientRect();px.set((e.clientX-r.left)/r.width*2-1);py.set((e.clientY-r.top)/r.height*2-1);}}
    onPointerLeave={()=>{px.set(0);py.set(0);}}
-   onPointerDown={e=>{drag.current=e.clientX;}} onPointerUp={e=>{if(drag.current!==null){const dx=e.clientX-drag.current;if(Math.abs(dx)>50)go(dx<0?1:-1);drag.current=null;}}}>
+   onPointerDown={e=>{drag.current={x:e.clientX,y:e.clientY};}} onPointerCancel={()=>{drag.current=null;}}
+   onPointerUp={e=>{const s0=drag.current;drag.current=null;if(!s0||still())return;const dx=e.clientX-s0.x,dy=e.clientY-s0.y;
+    // horizontal swipes only — a vertical page scroll never changes the project
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*2)go(dx<0?1:-1);}}>
    <div className="u3-floor" aria-hidden="true"/>
    <motion.div className="u3-track" role="list" aria-label="Projeler" style={{rotateX:tiltX,rotateY:tiltY}}>
     {U3_PROJECTS.map((p,k)=>{
@@ -81,7 +91,7 @@ export function ProjectCarousel(){
       {!front && <span className="u3-card-ghost" aria-hidden="true"/>}
       <button type="button" className="u3-card" aria-label={front?`${p.name} projesini aç`:`${p.name} projesine geç`} tabIndex={front?0:-1}
        onClick={e=>{if(!front){setI(k);return;}lastCard.current=e.currentTarget;openProject(p);}}
-       onPointerMove={e=>{if(e.pointerType!=='mouse'||!front||reduced)return;const r=e.currentTarget.getBoundingClientRect();
+       onPointerMove={e=>{if(e.pointerType!=='mouse'||!front||reduced||still())return;const r=e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty('--mx',((e.clientX-r.left)/r.width).toFixed(3));e.currentTarget.style.setProperty('--my',((e.clientY-r.top)/r.height).toFixed(3));}}
        onPointerLeave={e=>{e.currentTarget.style.removeProperty('--mx');e.currentTarget.style.removeProperty('--my');}}>
        {open?.id!==p.id && <motion.span className="u3-card-img" layoutId={`u3-img-${p.id}`} transition={{duration:reduced?0:.8,ease:EASE}}><img src={p.card} alt="" loading={Math.abs(d)<=1?'eager':'lazy'} draggable={false}/></motion.span>}
