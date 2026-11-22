@@ -8,7 +8,6 @@ import {AnimatePresence,motion,useMotionValue,useReducedMotion,useScroll,useSpri
 import {Icon} from './Icon';
 import {ArrowSwap} from './ArrowSwap';
 import {viaSharedTransition} from '@/lib/viewTransition';
-import {BuildingWrap} from './BuildingWrap';
 
 export const NAV=[
  {href:'/',label:'Deneyim',icon:'orbit'},
@@ -59,11 +58,7 @@ export function Stage({label,media,title,lead,top,left,right,below,scrollTarget=
  const {scrollYProgress}=useScroll({target:ref,offset:['start start','end start']});
  const mediaY=useTransform(scrollYProgress,[0,1],['0%','12%']);
  const titleY=useTransform(scrollYProgress,[0,1],['0%','-55%']);
- // Pinned segment: the stage holds still for one extra viewport of scroll while the title
- // dissolves into particles that wrap the focal building (see BuildingWrap).
- const pin=useRef<HTMLDivElement>(null);
- const {scrollYProgress:pinP}=useScroll({target:pin,offset:['start start','end end']});
- const titleO=useTransform(pinP,[.03,.3],[1,0]);
+ const titleO=useTransform(scrollYProgress,[0,.55],[1,0]);
  // Pointer depth: cards drift a few px against each other (springs, transform only).
  const px=useMotionValue(0),py=useMotionValue(0);
  const sx=useSpring(px,{stiffness:60,damping:18}),sy=useSpring(py,{stiffness:60,damping:18});
@@ -86,14 +81,11 @@ export function Stage({label,media,title,lead,top,left,right,below,scrollTarget=
  const depth=(d:number)=>reduced?{}:{initial:{opacity:0,y:90,scale:.9,rotateX:14},animate:{opacity:1,y:0,scale:1,rotateX:0},transition:{duration:1.4,delay:d,ease:[.16,1,.3,1] as const},style:{transformPerspective:1400,transformOrigin:'50% 100%'}};
 
  return <div className="st-wrap">
-  <div ref={pin} className="st-pin">
   <section ref={ref} className="st-stage" data-stage aria-label={label} onPointerMove={onMove} onPointerLeave={()=>{px.set(0);py.set(0);}}>
    <motion.div className="st-media" style={reduced?undefined:{y:mediaY,x:mx}}>
     <motion.div className="st-media-reveal" {...(reduced||viaSharedTransition()?{}:{initial:{clipPath:'inset(14% 10% 14% 10% round 60px)',scale:1.18},animate:{clipPath:'inset(0% 0% 0% 0% round 0px)',scale:1.04},transition:{duration:1.9,ease:[.16,1,.3,1]}})}>{media}</motion.div>
    </motion.div>
    <div className="st-shade" aria-hidden="true"/>
-   {/* Title → building particles, driven by this stage's scroll progress. */}
-   <BuildingWrap progress={pinP} stage={ref}/>
 
    <motion.div className="st-title-wrap" style={reduced?undefined:{y:titleY,opacity:titleO}}>
     <h1 className="st-title">{title}</h1>
@@ -133,7 +125,6 @@ export function Stage({label,media,title,lead,top,left,right,below,scrollTarget=
     {NAV.map(n=><Link key={n.href} href={n.href} onClick={()=>setMenu(false)} aria-current={isActive(path,n.href)?'page':undefined}><Icon name={n.icon}/>{n.label}<ArrowSwap size={14}/></Link>)}
    </motion.nav>}</AnimatePresence>
   </section>
-  </div>
   {below && <div className="st-below">{below}</div>}
  </div>;
 }

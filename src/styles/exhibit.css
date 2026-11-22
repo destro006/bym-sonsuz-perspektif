@@ -138,21 +138,3 @@ html:not([data-exnav="1"]) .exnav-home{opacity:0;pointer-events:none;transform:t
 /* Anchored sections land below the floating navigation. */
 [id^="bolum-"],#form,#portfoy,#galeri,#hikaye{scroll-margin-top:84px}
 @media(max-width:700px){[id^="bolum-"],#form,#portfoy,#galeri,#hikaye{scroll-margin-top:128px}}
-
-/* Title → building particle layer (above the photo and title, below glass cards and notches). */
-.st-wrap-particles{position:absolute;inset:0;z-index:3;pointer-events:none}
-/* Hero pin: the stage holds for one viewport of scroll while the particle wrap plays. */
-/* A sticky box cannot leave its parent's content box, so the extra scroll length is an in-flow
-   spacer (padding would not count). */
-.st-site .st-pin::after{content:'';display:block;height:90svh}
-.st-site .st-pin>.st-stage{position:sticky;top:var(--gap)}
-@media(max-width:860px){.st-site .st-pin::after{height:75svh}.st-site .st-pin>.st-stage{top:8px}}
-@media(prefers-reduced-motion:reduce){.st-site .st-pin::after{display:none}.st-site .st-pin>.st-stage{position:relative;top:auto}}
-/* Secondary stages: the particles must be visible where they are born (the card headline),
-   so they sit above the glass card; the canvas is clipped to the photo's rounded frame. */
-.st-site .st-layer>.st-wrap-particles{z-index:4;border-radius:var(--stage-r)}
-/* Homepage chapter wraps. */
-.st-site .hc-wrap,.st-site .hc-contact,.fj-stage{position:relative}
-.st-site .hc-wrap>.st-wrap-particles{z-index:4}
-.st-site .hc-contact>.st-wrap-particles{z-index:4;border-radius:inherit}
-.fj-stage>.st-wrap-particles{z-index:5}

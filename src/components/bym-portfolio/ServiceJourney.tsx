@@ -1,8 +1,6 @@
 'use client';
 import {BASE_PATH} from '@/lib/asset';
 import Link from 'next/link';
-import {useScroll} from 'framer-motion';
-import {BuildingWrap} from './BuildingWrap';
 import Image from 'next/image';
 import {useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import gsap from 'gsap';
@@ -42,8 +40,6 @@ const N_SC=SCENES.length;
 export function ServiceJourney({id,kicker,chapter,cta={href:'/hizmetler',label:'Bütün hizmetler'}}:{id?:string;kicker:string;chapter?:string;cta?:{href:string;label:string}}){
  const root=useRef<HTMLElement>(null);
  const frame=useRef<HTMLDivElement>(null);
- const stageEl=useRef<HTMLDivElement>(null);
- const {scrollYProgress:wrapP}=useScroll({target:root,offset:['start end','start start']});
  const [active,setActive]=useState(0);
  const prev=useRef(0);
  const st=useRef<ScrollTrigger|null>(null);
@@ -164,12 +160,9 @@ export function ServiceJourney({id,kicker,chapter,cta={href:'/hizmetler',label:'
 
  const s=SCENES[active],svc=SERVICES[active];
  return <section ref={root} id={id} data-chapter={chapter} className="fj" aria-label="Fikirden yapıya: hizmetler">
-  <div className="fj-stage" ref={stageEl}>
-   {/* Particles: born from "Fikirden yapıya", wrap the active scene's building; complete as the
-       section settles at the top, then glide to each newly selected scene. */}
-   <BuildingWrap progress={wrapP} stage={stageEl} title=".fj-title" img=".fj-scene[data-active='1'] img"/>
+  <div className="fj-stage">
    <div ref={frame} className="fj-frame">
-    {SCENES.map((x,i)=><div key={i} className="fj-scene" data-active={i===active?'1':undefined} style={{zIndex:i===0?3:1,visibility:i===0?'visible':'hidden'}} aria-hidden={i!==active}>
+    {SCENES.map((x,i)=><div key={i} className="fj-scene" style={{zIndex:i===0?3:1,visibility:i===0?'visible':'hidden'}} aria-hidden={i!==active}>
      <div className="fj-par"><div className="fj-kb">
       <Image src={x.src} alt={i===active?x.alt:''} fill sizes="92vw" quality={86} style={{objectFit:'cover',objectPosition:x.pos}} priority={false}/>
      </div></div>
