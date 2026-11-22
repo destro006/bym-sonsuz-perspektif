@@ -13,7 +13,7 @@ export function PageShell({eyebrow,title,lead,children}:{eyebrow:string;title:st
    {children}
    <footer className="page-footer">
     <Link href="/" className="backlink">← Deneyime dön</Link>
-    <span>© BYM İnşaat · Konsept prototip — içerikler onay sürecindedir.</span>
+    <span>© BYM İnşaat</span>
    </footer>
   </main>
  </div>;

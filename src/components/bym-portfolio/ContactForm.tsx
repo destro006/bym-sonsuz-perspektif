@@ -14,7 +14,7 @@ export function ContactForm(){
   <div className="bym-form-row"><label>Adınız Soyadınız *<input required autoComplete="name" name="name" value={values.name} onChange={e=>change('name',e.target.value)} placeholder="Adınız Soyadınız"/></label><label>E-posta *<input required type="email" name="email" autoComplete="email" value={values.email} onChange={e=>change('email',e.target.value)} placeholder="ornek@eposta.com"/></label></div>
   <div className="bym-form-row"><label>Telefon<input type="tel" autoComplete="tel" name="phone" value={values.phone} onChange={e=>change('phone',e.target.value)} placeholder="05__ ___ __ __"/></label><label>Konu<input name="subject" value={values.subject} onChange={e=>change('subject',e.target.value)} placeholder="Projeniz hakkında"/></label></div>
   <label>Mesajınız *<textarea required rows={6} minLength={8} name="message" value={values.message} onChange={e=>change('message',e.target.value)} placeholder="Projenizi bize anlatın..."/></label>
-  <p className="bym-form-note">Bu form bir demo e-posta akışı kullanır; gönder düğmesi, varsayılan e-posta uygulamanızda hazırlanmış mesajı açar. Sunucuda veri kaydetmez.</p>
+  <p className="bym-form-note">Gönder düğmesi, mesajınızı e-posta uygulamanızda hazır olarak açar.</p>
   <button type="submit" className="bym-primary-button">E-posta oluştur <span aria-hidden>↗</span></button>
  </form>;
 }

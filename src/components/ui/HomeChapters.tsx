@@ -2,7 +2,7 @@
 import {useEffect,useRef} from 'react';
 import {U3_STARS} from '@/data/ui03';
 import {Vitrin} from '@/components/ui03/Vitrin';
-import {ContactBand,PendingProjects,PhaseStory,useChapterScroll,useGlassTilt} from '@/components/ui03/Sections';
+import {ContactBand,PhaseStory,useChapterScroll,useGlassTilt} from '@/components/ui03/Sections';
 
 /** Homepage chapters, in the same order as the top navigation. */
 export const HOME_CHAPTERS=[
@@ -50,7 +50,6 @@ export function HomeChapters({onActive}:{active:ChapterId;onActive:(id:ChapterId
   <section id="bolum-fikirden-yapiya" data-chapter="fikirden-yapiya" className="u3-section" aria-label="Fikirden Yapıya">
    <Head kicker="FİKİRDEN YAPIYA" title={<>Bir fikrin<br/><em>yapıya dönüşümü.</em></>} lead="Dört aşamada, tek bir bütün: her adım bir sonrakinin zeminini hazırlar."/>
    <PhaseStory/>
-   <div className="u3-wrap"><PendingProjects/></div>
   </section>
 
   <section id="bolum-iletisim" data-chapter="iletisim" className="u3-section u3-last" aria-label="İletişim"><ContactBand/></section>

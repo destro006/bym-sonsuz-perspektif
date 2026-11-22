@@ -62,3 +62,9 @@ Node.js >= 20.9 gerekir.
 - Project view: full-screen shared-element expand (`layoutId u3-img-<id>`), staggered title/facts/navigation, directional clip-path wipes, pointer parallax; page behind recedes (`html[data-u3detail]`). Back/refresh/deep link/Escape supported; carousel position and focus restored.
 - Rüya Şehir figures come from `data/project-facts.json` and are labelled "müşteri onayı beklemektedir".
 - GSAP / immersive-3d-web / awwwards-3d skills were NOT installed in this environment; implemented without them.
+
+### Visible status notes removed (owner request)
+The owner asked to remove all visitor-facing internal/status notes ("onay bekliyor", "Görseller hazırlanıyor",
+pending-project list, "Temsili kent dokusu" watermark, development notes in data/chapters.json, "prototip").
+Approval status is unchanged and is tracked here and in data/project-facts.json / data/ui03-media-manifest.json:
+images and Rüya Şehir figures are still pending client approval; the city descent is still not geographically exact.

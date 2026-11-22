@@ -5,7 +5,7 @@ import {motion,useMotionValue,useReducedMotion,useSpring,useTransform,type Varia
 import {gsap} from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {COMPANY} from '@/data/bym-portfolio';
-import {U3_HERO,U3_PENDING,U3_PROJECTS} from '@/data/ui03';
+import {U3_HERO,U3_PROJECTS} from '@/data/ui03';
 import {asset} from '@/lib/asset';
 
 if(typeof window!=='undefined')gsap.registerPlugin(ScrollTrigger);
@@ -141,13 +141,6 @@ function PlanSketch({reduced}:{reduced:boolean}){
  </svg>;
 }
 
-export function PendingProjects(){
- return <div className="u3-pending">
-  <p className="u3-small">Görsel arşivi doğrulanmayı bekleyen projeler</p>
-  <ul>{U3_PENDING.map(p=><li key={p.id} className="u3-glass u3-tilt"><span className="u3-pending-mark" aria-hidden="true"/>{p.name}<small>Görseller hazırlanıyor</small></li>)}</ul>
- </div>;
-}
-
 export function AboutBand(){
  return <div className="u3-wrap u3-about">
   <Reveal className="u3-about-copy">
@@ -179,7 +172,7 @@ export function ContactBand(){
   </Reveal>
   <footer className="u3-foot">
    <span>© {new Date().getFullYear()} BYM İnşaat</span>
-   <span>Görseller arşiv kaynaklıdır; yayın onayı beklemektedir.</span>
+   <a href={COMPANY.originalWebsite} target="_blank" rel="noreferrer">byminsaat.com.tr</a>
   </footer>
  </div>;
 }

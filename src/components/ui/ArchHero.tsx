@@ -41,7 +41,6 @@ export function ArchHero({chapter,goTo}:{chapter:number;goTo:(p:number)=>void}){
    <button type="button" className="ah-replay" onClick={()=>goTo(0)}><span className="ah-replay-dot" aria-hidden="true"><svg viewBox="0 0 24 24" width="11" height="11"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg></span>Yolculuğu yeniden izle</button>
   </div>
 
-  <p className="ah-source">Proje görseli · müşteri onayı bekliyor</p>
 
   <div className="jn-notch jn-bl ah-notch">
    <article className="ah-card" aria-labelledby="ah-proje">
@@ -67,7 +66,7 @@ export function ArchHero({chapter,goTo}:{chapter:number;goTo:(p:number)=>void}){
      <div><dt><Icon name="pin" size={14}/>Dönüm arsa</dt><dd>{v.landDecares}</dd></div>
     </dl>
     <ul className="ah-tags" aria-label="Sosyal olanaklar">{v.amenities.slice(0,4).map(a=><li key={a}>{a}</li>)}</ul>
-    <p className="ah-foot">{v.constructionAreaM2.toLocaleString('tr-TR')} m² inşaat alanı · kaynak dosyadan, onay bekliyor</p>
+    <p className="ah-foot">{v.constructionAreaM2.toLocaleString('tr-TR')} m² inşaat alanı</p>
    </article>
   </div>
 

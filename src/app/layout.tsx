@@ -8,7 +8,7 @@ import '../styles/ui03.css';
 
 export const metadata: Metadata = {
   title: 'BYM İnşaat | Sonsuz Perspektif',
-  description: 'BYM İnşaat için gerçek zamanlı 3D, kaydırma kontrollü sinematik web deneyimi prototipi.',
+  description: 'BYM İnşaat — Sonsuz Perspektif: fikirden yapıya uzanan mimari yolculuk.',
   robots: { index: false, follow: false },
   // The site art-directs its own dark (cosmic) and ivory (architecture) palettes; Dark Reader's
   // automatic inversion turned the ivory interface brown/black, so the site opts out of it.

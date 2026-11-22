@@ -18,7 +18,6 @@ const ICONS:React.ReactNode[]=[
 
 export function SiteHud({chapter,progress,goTo,navActive,onNav}:{chapter:number,progress:number,goTo:(p:number)=>void,navActive:ChapterId,onNav:(id:ChapterId)=>void}){
  const c=CHAPTERS[chapter]||CHAPTERS[0];
- const city=chapter===3||chapter===4;
  return <>
   <SiteHeader active={navActive} onNav={onNav}/>
   <aside className="side-rail jn-notch jn-rail" aria-label="Sahne seçimi">
@@ -42,6 +41,5 @@ export function SiteHud({chapter,progress,goTo,navActive,onNav}:{chapter:number,
     <div className="progress-track" role="progressbar" aria-label="Sinematik yolculuk ilerlemesi" aria-valuenow={Math.round(progress*100)} aria-valuemin={0} aria-valuemax={100}><span style={{transform:`scaleX(${progress})`}}/></div>
     <span className="tiny-label">{String(Math.round(progress*100)).padStart(2,'0')}%</span>
   </div>
-  {city ? <div className="source-watermark">TEMSİLİ KENT DOKUSU · GERÇEK BİR KONUMU GÖSTERMEZ</div>:null}
  </>;
 }

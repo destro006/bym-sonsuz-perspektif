@@ -164,7 +164,6 @@ function ProjectDetail({project:p,onClose,reduced}:{project:U3Project;onClose:()
 
   <motion.div className="u3-d-ui" variants={seq} initial="hidden" animate="show" exit="exit">
    <motion.header className="u3-d-top" variants={item}>
-    <span className="u3-d-badge">Arşiv görselleri · yayın onayı bekliyor</span>
     <button type="button" className="u3-round u3-d-close" onClick={onClose} aria-label="Projeyi kapat ve projelere dön">✕</button>
    </motion.header>
    <div className="u3-d-info">
@@ -173,7 +172,6 @@ function ProjectDetail({project:p,onClose,reduced}:{project:U3Project;onClose:()
     {facts && <motion.div className="u3-d-facts u3-glass" variants={item}>
      <dl>{facts.stats.map(s=><div key={s.l}><dt>{s.l}</dt><dd>{s.v}</dd></div>)}</dl>
      <ul>{facts.tags.map(t=><li key={t}>{t}</li>)}</ul>
-     <small>Proje bilgileri müşteri onayı beklemektedir.</small>
     </motion.div>}
    </div>
    <motion.nav className="u3-d-nav" variants={item} aria-label="Görsel gezinme">
