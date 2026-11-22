@@ -49,10 +49,10 @@ export function useChapterScroll(root:React.RefObject<HTMLElement|null>){
  useEffect(()=>{
   const el=root.current;if(!el||noMotion())return;
   const ctx=gsap.context(()=>{
-   gsap.fromTo('.u3-sc-hero',{yPercent:-5},{yPercent:7,ease:'none',scrollTrigger:{trigger:'.u3-hero',start:'top bottom',end:'bottom top',scrub:.6}});
+   if(el.querySelector('.u3-sc-hero'))gsap.fromTo('.u3-sc-hero',{yPercent:-6},{yPercent:14,ease:'none',scrollTrigger:{trigger:'.u3-vitrin',start:'top bottom',end:'bottom top',scrub:.6}});
    gsap.utils.toArray<HTMLElement>('.u3-sc-ph').forEach(ph=>gsap.fromTo(ph,{yPercent:-7},{yPercent:7,ease:'none',scrollTrigger:{trigger:ph.closest('.u3-phase'),start:'top bottom',end:'bottom top',scrub:.6}}));
    gsap.fromTo('.u3-sc-rail',{scaleY:0},{scaleY:1,ease:'none',scrollTrigger:{trigger:'.u3-phases',start:'top 65%',end:'bottom 65%',scrub:.4}});
-   gsap.fromTo('.u3-sc-orbit',{rotate:-8,yPercent:10},{rotate:8,yPercent:-10,ease:'none',scrollTrigger:{trigger:'#bolum-projeler',start:'top bottom',end:'bottom top',scrub:.8}});
+   if(el.querySelector('.u3-sc-orbit'))gsap.fromTo('.u3-sc-orbit',{rotate:-8,yPercent:10},{rotate:8,yPercent:-10,ease:'none',scrollTrigger:{trigger:'#bolum-projeler',start:'top bottom',end:'bottom top',scrub:.8}});
   },el);
   // Content heights settle after images decode; keep trigger positions honest.
   const id=requestAnimationFrame(()=>ScrollTrigger.refresh());

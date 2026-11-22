@@ -62,7 +62,9 @@ export function ProjectCarousel(){
  const pose=(d:number)=>{
   const a=Math.abs(d);
   if(mobile)return {x:`${d*106}%`,z:0,rotateY:0,scale:d===0?1:.88,opacity:a>1?0:d===0?1:.4};
-  return {x:`${d*64}%`,z:-a*300,rotateY:-d*14,scale:1-a*.04,opacity:a>2?0:1-a*.22};
+  // Concave gallery wall (reference): sides smaller, outer edges turned toward the viewer, no overlap.
+  const X=[0,98,182][Math.min(a,2)]??200;
+  return {x:`${Math.sign(d)*X}%`,z:-a*60,rotateY:-Math.sign(d)*(a===0?0:a===1?22:30),scale:[1,.82,.68][Math.min(a,2)]??.6,opacity:a>2?0:1};
  };
  return <div className="u3-carousel">
   <div className="u3-stage" onKeyDown={e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);}}
@@ -76,6 +78,7 @@ export function ProjectCarousel(){
      const front=d===0;
      return <motion.div key={p.id} role="listitem" className={`u3-card-wrap${front?' is-front':''}`} style={{zIndex:20-Math.abs(d)}}
       initial={false} animate={pose(d)} transition={reduced?{duration:0}:{type:'spring',stiffness:70,damping:18,mass:1}}>
+      {!front && <span className="u3-card-ghost" aria-hidden="true"/>}
       <button type="button" className="u3-card" aria-label={front?`${p.name} projesini aç`:`${p.name} projesine geç`} tabIndex={front?0:-1}
        onClick={e=>{if(!front){setI(k);return;}lastCard.current=e.currentTarget;openProject(p);}}
        onPointerMove={e=>{if(e.pointerType!=='mouse'||!front||reduced)return;const r=e.currentTarget.getBoundingClientRect();
