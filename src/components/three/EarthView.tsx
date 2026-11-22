@@ -85,7 +85,11 @@ void main(){
   // Inner shell: limb brightening across the disc. Outer shell (back faces): halo that is
   // brightest exactly at the planet limb (ndv = sqrt(1-(2.4/2.56)^2) = 0.348) and fades to space,
   // so there is no dark gap between surface and glow.
-  float rim = uInner > 0.5 ? pow(1.0 - ndv, 2.2) : pow(clamp(ndv / 0.348, 0.0, 1.0), 2.6);
+  // Outer halo: rises to the limb and falls off quickly inside it. (It used to stay at full
+  // strength across the whole disc — invisible behind an opaque surface, but while the planet
+  // fades in that showed as a flat light-blue Earth.)
+  float rim = uInner > 0.5 ? pow(1.0 - ndv, 2.2)
+    : (ndv <= 0.348 ? pow(ndv / 0.348, 2.6) : exp(-(ndv - 0.348) * 14.0));
   float lit = clamp(dot(n, uSun) + (uInner > 0.5 ? 0.35 : 0.55), 0.0, 1.0);
   float forward = pow(clamp(dot(-viewDir, uSun), 0.0, 1.0), 6.0);
   vec3 col = uColor * rim * (0.12 + 1.35 * lit) + vec3(1.0, 0.72, 0.45) * rim * forward * 1.4 * lit;

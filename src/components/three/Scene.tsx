@@ -126,10 +126,10 @@ export function Scene({progress,quality,onFrame}:{progress:React.MutableRefObjec
 
   // Earth lighting: back-lit crescent silhouette first, then the sun swings round to reveal the day side.
   if(sun.current){
-   sun.current.position.lerpVectors(SUN_BACK,SUN_FRONT,smooth(0.3,0.46,p)).lerp(SUN_DUSK,smooth(0.5,0.6,p));
-   sun.current.intensity=mix(2.8,2.2,smooth(0.3,0.46,p));
+   sun.current.position.lerpVectors(SUN_BACK,SUN_FRONT,smooth(0.22,0.36,p)).lerp(SUN_DUSK,smooth(0.5,0.6,p));
+   sun.current.intensity=mix(2.8,2.2,smooth(0.22,0.36,p));
   }
-  if(amb.current)amb.current.intensity=mix(0.03,0.75,smooth(0.36,0.5,p));
+  if(amb.current)amb.current.intensity=mix(0.03,0.75,smooth(0.26,0.4,p));
   onFrame?.(p);
  });
  const budget=BUDGET[quality.tier];
