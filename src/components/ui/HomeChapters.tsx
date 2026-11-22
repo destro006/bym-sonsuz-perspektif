@@ -1,16 +1,8 @@
 'use client';
-import {asset} from '@/lib/asset';
-import Link from 'next/link';
-import Image from 'next/image';
-import {useEffect,useState} from 'react';
-import {AnimatePresence,motion,useReducedMotion} from 'framer-motion';
-import {BYM_PROJECTS,COMPANY,PRESS} from '@/data/bym-portfolio';
-import {ProjectTile} from '@/components/bym-portfolio/ProjectTile';
-import {LayeredFeature,Rise} from '@/components/bym-portfolio/Layered';
-import {Lines} from '@/components/bym-portfolio/Lines';
-import {ArrowSwap} from '@/components/bym-portfolio/ArrowSwap';
-import {GlideNav} from '@/components/bym-portfolio/GlideNav';
-import {ServiceJourney} from '@/components/bym-portfolio/ServiceJourney';
+import {useEffect} from 'react';
+import {U3_STARS} from '@/data/ui03';
+import {ProjectCarousel} from '@/components/ui03/ProjectCarousel';
+import {AboutBand,ContactBand,HeroBridge,PendingProjects,PhaseStory} from '@/components/ui03/Sections';
 
 /** Homepage chapters, in the same order as the top navigation. */
 export const HOME_CHAPTERS=[
@@ -27,54 +19,42 @@ export function scrollToChapter(id:ChapterId,reduced:boolean){
  document.getElementById(`bolum-${id}`)?.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
 }
 
-function Head({kicker,lines,href,cta}:{kicker:string;lines:string[];href:string;cta:string}){
- return <div className="st-section-head hc-head">
-  <div><Rise><span className="st-kicker">{kicker}</span></Rise><h2 className="st-h2"><Lines l={lines} inView delay={.1}/></h2></div>
-  <Rise delay={.2}><Link href={href} className="st-btn">{cta}<span className="st-btn-dot"><ArrowSwap size={14}/></span></Link></Rise>
- </div>;
+function Head({kicker,title,lead}:{kicker:string;title:React.ReactNode;lead?:string}){
+ return <div className="u3-wrap u3-head"><span className="u3-kicker">{kicker}</span><h2 className="u3-h2">{title}</h2>{lead&&<p className="u3-body">{lead}</p>}</div>;
 }
 
 /**
- * Chapters after the cosmic journey (Projeler → İletişim). One IntersectionObserver reports the
+ * Chapters after the cosmic journey (Concept 03, navy glass). One IntersectionObserver reports the
  * chapter crossing the viewport centre; the journey section itself reports "deneyim".
- * A compact floating nav takes over once the sticky stage has scrolled away.
  */
-export function HomeChapters({active,onActive}:{active:ChapterId;onActive:(id:ChapterId)=>void}){
- const reduced=!!useReducedMotion();
+export function HomeChapters({onActive}:{active:ChapterId;onActive:(id:ChapterId)=>void}){
  useEffect(()=>{
   const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting)onActive((e.target as HTMLElement).dataset.chapter as ChapterId);},{rootMargin:'-48% 0px -48% 0px'});
   document.querySelectorAll('[data-chapter]').forEach(el=>io.observe(el));
   return()=>io.disconnect();
  },[onActive]);
- const projects=BYM_PROJECTS.slice(0,4);
- return <div className="st-site home-chapters">
-  <ServiceJourney id="bolum-fikirden-yapiya" chapter="fikirden-yapiya" kicker="FİKİRDEN YAPIYA"/>
+ // Show the floating nav whenever the chapters are on screen, independent of 3D frames being rendered
+ // (a deep link or jump can land here without the intro scene ever drawing its final frame).
+ useEffect(()=>{
+  const el=document.querySelector<HTMLElement>('.u3.home-chapters');if(!el)return;
+  const io=new IntersectionObserver(([e])=>{document.documentElement.dataset.u3post=e.isIntersecting?'1':'0';},{rootMargin:'0px 0px -60% 0px'});
+  io.observe(el);return()=>{io.disconnect();delete document.documentElement.dataset.u3post;};
+ },[]);
+ return <div className="u3 home-chapters">
+  <div className="u3-stars" aria-hidden="true" style={{backgroundImage:`url(${U3_STARS})`}}/>
+  <HeroBridge/>
 
-  <section id="bolum-projeler" data-chapter="projeler" className="st-section hc-chapter" aria-label="Projeler">
-   <Head kicker="PROJELER" lines={['İz bırakan','*projeler.*']} href="/projeler" cta="Tüm projeler"/>
-   <div className="st-tiles hc-tiles">{projects.map((p,i)=><ProjectTile key={p.slug} project={p} index={i} reduced={reduced}/>)}</div>
+  <section id="bolum-fikirden-yapiya" data-chapter="fikirden-yapiya" className="u3-section" aria-label="Fikirden Yapıya">
+   <Head kicker="FİKİRDEN YAPIYA" title={<>Bir fikrin<br/><em>yapıya dönüşümü.</em></>} lead="Dört aşamada, tek bir bütün: her adım bir sonrakinin zeminini hazırlar."/>
+   <PhaseStory/>
   </section>
 
-  <section id="bolum-hakkimizda" data-chapter="hakkimizda" className="hc-chapter" aria-label="Hakkımızda">
-   <LayeredFeature src={asset("/assets/bym-portfolio-curated/ruya-sehir/ruya-hero.webp")} alt="Rüya Şehir konut bloklarının cephesi" tall>
-    <span className="st-kicker">HAKKIMIZDA</span>
-    <h2 className="st-h3"><Lines l={['Güven, tutarlılıkla','*inşa edilir.*']} inView delay={.2}/></h2>
-    <p className="st-card-text">{COMPANY.about}</p>
-    <ul className="st-list">{COMPANY.values.map(v=><li key={v.title}>{v.title}</li>)}</ul>
-    <Link href="/hakkimizda" className="st-btn">Hikâyemiz<span className="st-btn-dot"><ArrowSwap size={14}/></span></Link>
-   </LayeredFeature>
+  <section id="bolum-projeler" data-chapter="projeler" className="u3-section" aria-label="Projeler">
+   <Head kicker="ÖNE ÇIKAN PROJELER" title={<>İz bırakan<br/><em>projeler.</em></>} lead="Bir projeye dokunun; yalnızca o projeye ait görsellerle galerisi açılır."/>
+   <div className="u3-wrap"><ProjectCarousel/><PendingProjects/></div>
   </section>
 
-  <section id="bolum-iletisim" data-chapter="iletisim" className="st-section hc-chapter" aria-label="İletişim">
-   <motion.div className="hc-contact" initial={reduced?false:{clipPath:'inset(12% 8% 12% 8% round 64px)'}} whileInView={{clipPath:'inset(0% 0% 0% 0% round 44px)'}} viewport={{once:true,amount:.25}} transition={{duration:1.5,ease:[.16,1,.3,1]}}>
-    <div className="hc-contact-img"><Image src={asset("/assets/bym-portfolio-curated/gaziantep-villalari/villa-hero.webp")} alt="" fill sizes="100vw" quality={80}/></div>
-    <div className="hc-contact-body lux-glass-dark">
-     <span className="st-kicker st-kicker-light">İLETİŞİM</span>
-     <h2 className="hc-contact-title"><Lines l={['Geleceği birlikte','*inşa edelim.*']} inView delay={.3}/></h2>
-     <a className="hc-mail" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
-     <Link href="/iletisim" className="st-btn st-btn-light">İletişime geçin<span className="st-btn-dot"><ArrowSwap size={14}/></span></Link>
-    </div>
-   </motion.div>
-  </section>
+  <section id="bolum-hakkimizda" data-chapter="hakkimizda" className="u3-section" aria-label="Hakkımızda"><AboutBand/></section>
+  <section id="bolum-iletisim" data-chapter="iletisim" className="u3-section u3-last" aria-label="İletişim"><ContactBand/></section>
  </div>;
 }

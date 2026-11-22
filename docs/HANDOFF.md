@@ -46,3 +46,12 @@ Node.js >= 20.9 gerekir.
 - Üzerine eklenenler: GitHub Pages yayını (`npm run build:pages`, `.github/workflows/pages.yml`, `src/lib/asset.ts` ile alt yol), `PerformanceMonitor` için 3 sn ısınma ve 45/57 fps eşikleri, sahne ekrandan tamamen çıkınca çizimi durdurma.
 - Canlı adres: https://destro006.github.io/bym-sonsuz-perspektif/ (bu dala her gönderimde otomatik güncellenir).
 - Bilgisayarda devam ederken önce bu dalı çekin (`git pull`), aksi halde iki sürüm yeniden ayrışır.
+
+## Concept 03 UI (post-intro) — local, not deployed
+- Source: `BYM_Konsept03_UI_Gorsel_ve_Claude_Paketi.zip` (prompt `CLAUDE_CODE_TAM_UYGULAMA_PROMPTU.md`).
+- Data: `data/ui03-media-manifest.json` → `src/data/ui03.ts` (single source; images `public/assets/bym-ui03/`). All images: source photos/renders, **publication approval pending**.
+- Components: `src/components/ui03/{ProjectCarousel,Sections}.tsx`, styles `src/styles/ui03.css` (navy glass tokens, scoped `.u3` / `.exnav`).
+- `HomeChapters.tsx` now renders Hero → Fikirden Yapıya (4 phases) → Projeler (3D carousel + per-project gallery, `?proje=<id>` deep link) → Hakkımızda → İletişim. Section ids/data-chapter unchanged.
+- `ExhibitNav.tsx`: navy restyle + real collapsed menu ≤760px. Nav also shown via `html[data-u3post="1"]` when chapters are on screen (jump/deep-link case; intro untouched).
+- 8 projects without media are listed as "Görseller hazırlanıyor" placeholders, never filled with other photos.
+- Intro files (Scene, three/*, Experience) not modified.

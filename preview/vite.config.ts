@@ -23,9 +23,10 @@ function inlineAssets():Plugin{
   resolveId(id){return id.startsWith('bym-asset:')||id==='bym-curated'?'\0'+id:null;},
   load(id){
    if(id==='\0bym-curated'){
-    const dir=path.join(root,'public/assets/bym-portfolio-curated');const map:Record<string,string>={};
-    for(const slug of fs.readdirSync(dir))for(const f of fs.readdirSync(path.join(dir,slug)))
-     map[`/assets/bym-portfolio-curated/${slug}/${f}`]=`data:image/webp;base64,${fs.readFileSync(path.join(dir,slug,f)).toString('base64')}`;
+    const map:Record<string,string>={};
+    const walk=(rel:string)=>{for(const e of fs.readdirSync(path.join(root,'public',rel),{withFileTypes:true})){
+     const r=`${rel}/${e.name}`;if(e.isDirectory())walk(r);else if(/\.(png|webp|jpe?g)$/i.test(e.name))map[r]=`data:${mime(r)};base64,${fs.readFileSync(path.join(root,'public',r)).toString('base64')}`;}};
+    walk('/assets/bym-portfolio-curated');walk('/assets/bym-ui03');
     return `const M=${JSON.stringify(map)};export function __bymResolve(p){return M[p]||p;}`;
    }
    if(!id.startsWith(PREFIX))return null;
@@ -45,6 +46,8 @@ function inlineAssets():Plugin{
    // Template paths built at runtime (e.g. `${BASE_PATH}/assets/bym-portfolio-curated/${slug}/${key}.webp`)
    // resolve through one virtual map of every curated image.
    let out2=out.replace(/`\$\{BASE_PATH\}(\/assets\/[^`]+)`/g,(_m,rest:string)=>{if(!imports.includes(CURATED_IMPORT))imports.push(CURATED_IMPORT);return `__bymResolve(\`${rest}\`)`;});
+   // asset('/assets/...') calls with runtime paths (Concept 03 manifest) resolve through the same map.
+   if(id.endsWith(path.join('src','lib','asset.ts'))){out2=out2.replace('`${BASE_PATH}${path}`','__bymResolve(path)');if(!imports.includes(CURATED_IMPORT))imports.push(CURATED_IMPORT);}
    return out2===code?null:{code:imports.join('\n')+'\n'+out2,map:null};
   }};
 }

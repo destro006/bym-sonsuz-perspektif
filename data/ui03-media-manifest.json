@@ -1,0 +1,428 @@
+{
+  "version": "1.0",
+  "reference": "Concept 03 selected by user",
+  "cosmic_intro_policy": "IMMUTABLE — do not alter intro sequence, camera, triggers, timeline, assets, or BYM original logo",
+  "approval": "SOURCE-BASED, SUBJECT TO CLIENT APPROVAL BEFORE PUBLICATION",
+  "projects": [
+    {
+      "id": "ruya-sehir",
+      "name": "Rüya Şehir",
+      "category": "Konut",
+      "status": "source_media_found_publication_approval_required",
+      "card": "/assets/bym-ui03/index/ruya-sehir-card.webp",
+      "cover": "/assets/bym-ui03/projects/ruya-sehir/cover.webp",
+      "thumb": "/assets/bym-ui03/thumbs/ruya-sehir-thumb.webp",
+      "gallery": [
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-01.webp",
+          "sourceFileName": "26.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1BKplE-Uma_xvIh2-ajEVqLn94OnoznBH/view",
+          "sourceWidth": 5472,
+          "sourceHeight": 3648,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-02.webp",
+          "sourceFileName": "13.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1CCzZc7TzfJtijXO3x3o5odbUSBFQ1u_u/view",
+          "sourceWidth": 5184,
+          "sourceHeight": 3456,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-03.webp",
+          "sourceFileName": "24.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1wEE16Qjq7C7jm50qTvJvQVqusksVTADV/view",
+          "sourceWidth": 5184,
+          "sourceHeight": 3456,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-04.webp",
+          "sourceFileName": "IMG_0810_peyzaj.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1P5GBRwWqKNUU00_gy-P44aBYAwpJ7Q7k/view",
+          "sourceWidth": 3000,
+          "sourceHeight": 1688,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-05.webp",
+          "sourceFileName": "11.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1S_eu8bHwaFwB-n62oiywEE3KkNJyNyVj/view",
+          "sourceWidth": 5184,
+          "sourceHeight": 3456,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-06.webp",
+          "sourceFileName": "IMG_1030_ruya-giris.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1WVMOyOBflxMC6StI4xtL-gCslg8a2rqu/view",
+          "sourceWidth": 3264,
+          "sourceHeight": 2448,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-07.webp",
+          "sourceFileName": "14.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1PqrHxKWHZ3Oe7v4I9EdGX1wq1FBZh-NE/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-08.webp",
+          "sourceFileName": "22.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1wqrFILU0wz4cogx9VZW4yHBQtop7wMwy/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-09.webp",
+          "sourceFileName": "23.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1tyWeejgFe9-6oi0JY_HVuAjAxY-T8Y-T/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/ruya-sehir/gallery-10.webp",
+          "sourceFileName": "IMG_1415_cephe.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1BeSPurLGOi8nnVjxU7P9K9X5rCzKYdI1/view",
+          "sourceWidth": 1200,
+          "sourceHeight": 1600,
+          "type": "original_source_photo_or_render_unverified"
+        }
+      ],
+      "sourceFolder": "https://drive.google.com/drive/folders/1jhQy5ZjQuThR7BF6kp_t-eDVqxQ0cc9R",
+      "approvedForPublication": false
+    },
+    {
+      "id": "burak-manzara-evleri",
+      "name": "Burak Manzara Evleri",
+      "category": "Konut",
+      "status": "source_media_found_publication_approval_required",
+      "card": "/assets/bym-ui03/index/burak-manzara-evleri-card.webp",
+      "cover": "/assets/bym-ui03/projects/burak-manzara-evleri/cover.webp",
+      "thumb": "/assets/bym-ui03/thumbs/burak-manzara-evleri-thumb.webp",
+      "gallery": [
+        {
+          "file": "/assets/bym-ui03/projects/burak-manzara-evleri/gallery-01.webp",
+          "sourceFileName": "9.JPG",
+          "driveUrl": "https://drive.google.com/file/d/16mNmNtyeqw7zXAUVc1j5klkEshxxuuMb/view",
+          "sourceWidth": 1936,
+          "sourceHeight": 2592,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/burak-manzara-evleri/gallery-02.webp",
+          "sourceFileName": "7.JPG",
+          "driveUrl": "https://drive.google.com/file/d/10-dfqnCHoVH29akKVxBVJNVxym4dr0aw/view",
+          "sourceWidth": 1936,
+          "sourceHeight": 2592,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/burak-manzara-evleri/gallery-03.webp",
+          "sourceFileName": "11.jpeg.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1cqEct4Lu8flmeebZyODoF2sxpV1lOG2n/view",
+          "sourceWidth": 1195,
+          "sourceHeight": 1600,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/burak-manzara-evleri/gallery-04.webp",
+          "sourceFileName": "12.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1MIIGXQuV-VnIHyEE_7zpNTeH80HqOwo0/view",
+          "sourceWidth": 3264,
+          "sourceHeight": 2448,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/burak-manzara-evleri/gallery-05.webp",
+          "sourceFileName": "1.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1fQsbT5CyzB7CV1yski5ABgAMGrpuc9Rc/view",
+          "sourceWidth": 1600,
+          "sourceHeight": 1200,
+          "type": "original_source_photo_or_render_unverified"
+        }
+      ],
+      "sourceFolder": "https://drive.google.com/drive/folders/1WI81bIW0meENSnuPPbR0U3F9wjRDTvhG",
+      "approvedForPublication": false
+    },
+    {
+      "id": "villa-2020",
+      "name": "Villa 2020",
+      "category": "Villa",
+      "status": "source_media_found_publication_approval_required",
+      "card": "/assets/bym-ui03/index/villa-2020-card.webp",
+      "cover": "/assets/bym-ui03/projects/villa-2020/cover.webp",
+      "thumb": "/assets/bym-ui03/thumbs/villa-2020-thumb.webp",
+      "gallery": [
+        {
+          "file": "/assets/bym-ui03/projects/villa-2020/gallery-01.webp",
+          "sourceFileName": "2.png",
+          "driveUrl": "https://drive.google.com/file/d/1azXX_5SAGbGrVmhV5cenXgFzDFr4L6P6/view",
+          "sourceWidth": 2752,
+          "sourceHeight": 1536,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/villa-2020/gallery-02.webp",
+          "sourceFileName": "1.png",
+          "driveUrl": "https://drive.google.com/file/d/1YhfL9j1f79K3T0OGoFsp5zjPElwR42qU/view",
+          "sourceWidth": 2752,
+          "sourceHeight": 1536,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/villa-2020/gallery-03.webp",
+          "sourceFileName": "3.png",
+          "driveUrl": "https://drive.google.com/file/d/1WIWed1-kCWTZg536JlNQ1Odv_s_1C4uM/view",
+          "sourceWidth": 2752,
+          "sourceHeight": 1536,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/villa-2020/gallery-04.webp",
+          "sourceFileName": "4.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1MCIcPxY7iisqBWf7KchJWAejMPP6EGp8/view",
+          "sourceWidth": 2500,
+          "sourceHeight": 1668,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/villa-2020/gallery-05.webp",
+          "sourceFileName": "5.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1cPWlzyHzBKDH0jVwC0aR4phARgL_dmmy/view",
+          "sourceWidth": 3000,
+          "sourceHeight": 2002,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/villa-2020/gallery-06.webp",
+          "sourceFileName": "7.jpeg.jpg",
+          "driveUrl": "https://drive.google.com/file/d/1JZf8OqwHXBLGiJ4pc7YnrLz2eerRkZhA/view",
+          "sourceWidth": 1600,
+          "sourceHeight": 1200,
+          "type": "original_source_photo_or_render_unverified"
+        }
+      ],
+      "sourceFolder": "https://drive.google.com/drive/folders/19dPyUu5Fb0WU4n4P0NckGAOEU-0TZScd",
+      "approvedForPublication": false
+    },
+    {
+      "id": "nisa-apartmani",
+      "name": "Nisa Apartmanı",
+      "category": "Konut",
+      "status": "source_media_found_publication_approval_required",
+      "card": "/assets/bym-ui03/index/nisa-apartmani-card.webp",
+      "cover": "/assets/bym-ui03/projects/nisa-apartmani/cover.webp",
+      "thumb": "/assets/bym-ui03/thumbs/nisa-apartmani-thumb.webp",
+      "gallery": [
+        {
+          "file": "/assets/bym-ui03/projects/nisa-apartmani/gallery-01.webp",
+          "sourceFileName": "3.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1couBKC6j-dzTwOLh-6blR-n9G28RpUAj/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/nisa-apartmani/gallery-02.webp",
+          "sourceFileName": "1.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1JcRRsJeVue4VMkcIlEUpT8La9T054TpM/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/nisa-apartmani/gallery-03.webp",
+          "sourceFileName": "2.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1_U8-xBlOAB-BO5oWbEEG3xwVr9XcTSNd/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/nisa-apartmani/gallery-04.webp",
+          "sourceFileName": "5.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1lji2su9Rq0J3ADI-5w3I6Ub9xSy_hczA/view",
+          "sourceWidth": 3648,
+          "sourceHeight": 2736,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/nisa-apartmani/gallery-05.webp",
+          "sourceFileName": "8.png",
+          "driveUrl": "https://drive.google.com/file/d/1fOB37aXVZDIzCPHtZVbkcqTKTR4UCgjo/view",
+          "sourceWidth": 2752,
+          "sourceHeight": 1536,
+          "type": "original_source_photo_or_render_unverified"
+        }
+      ],
+      "sourceFolder": "https://drive.google.com/drive/folders/1fZHGDKT1Uhh7Fkf4dEA50nWElpQKImY1",
+      "approvedForPublication": false
+    },
+    {
+      "id": "bilal-cafe",
+      "name": "Bilal Cafe",
+      "category": "Ticari",
+      "status": "source_media_found_publication_approval_required",
+      "card": "/assets/bym-ui03/index/bilal-cafe-card.webp",
+      "cover": "/assets/bym-ui03/projects/bilal-cafe/cover.webp",
+      "thumb": "/assets/bym-ui03/thumbs/bilal-cafe-thumb.webp",
+      "gallery": [
+        {
+          "file": "/assets/bym-ui03/projects/bilal-cafe/gallery-01.webp",
+          "sourceFileName": "17.png",
+          "driveUrl": "https://drive.google.com/file/d/1Hb_gD8FeedH7BqAl5Uco_ERGSGn37TS_/view",
+          "sourceWidth": 1024,
+          "sourceHeight": 563,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/bilal-cafe/gallery-02.webp",
+          "sourceFileName": "1.png",
+          "driveUrl": "https://drive.google.com/file/d/1zcJO_2F4o2tVD65nyfqQz62muYh-AJo4/view",
+          "sourceWidth": 2752,
+          "sourceHeight": 1536,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/bilal-cafe/gallery-03.webp",
+          "sourceFileName": "9.JPG",
+          "driveUrl": "https://drive.google.com/file/d/1Ee-282ug5EkOFg4fa-HX1or5O6y8Nbsb/view",
+          "sourceWidth": 5458,
+          "sourceHeight": 3639,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/bilal-cafe/gallery-04.webp",
+          "sourceFileName": "13.png",
+          "driveUrl": "https://drive.google.com/file/d/14KjsUOo0ujlGtahvqgAF2Tm95yW117cq/view",
+          "sourceWidth": 2752,
+          "sourceHeight": 1536,
+          "type": "original_source_photo_or_render_unverified"
+        },
+        {
+          "file": "/assets/bym-ui03/projects/bilal-cafe/gallery-05.webp",
+          "sourceFileName": "15.JPG",
+          "driveUrl": "https://drive.google.com/file/d/18hZniCE7sWDrghsWc6SNESSpGQAzzSf7/view",
+          "sourceWidth": 5051,
+          "sourceHeight": 3473,
+          "type": "original_source_photo_or_render_unverified"
+        }
+      ],
+      "sourceFolder": "https://drive.google.com/drive/folders/1KeqZlZuRGJFQktObCFmW__N9ZzA7K4QS",
+      "approvedForPublication": false
+    },
+    {
+      "id": "loca-residence",
+      "name": "Loca Residence",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "adens",
+      "name": "Adens",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "ser-modern-2",
+      "name": "Ser Modern 2",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "modern-kule",
+      "name": "Modern Kule",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "royest-villas",
+      "name": "Royest Villas",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "golbasi-villalar",
+      "name": "Gölbaşı Villalar",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "vega-ovacik",
+      "name": "Vega Ovacık",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    },
+    {
+      "id": "deloca-port",
+      "name": "Deloca Port",
+      "status": "media_not_found_in_reviewed_drive_sources",
+      "card": null,
+      "cover": null,
+      "gallery": [],
+      "approvedForPublication": false,
+      "required": "Obtain authentic photographs of the exact project; never substitute a different building or AI representation."
+    }
+  ],
+  "excluded_images": [
+    "IMG_4358.JPG — Burak Manzara Evleri identified inside Rüya-labelled folder",
+    "IMG_3345.JPG — incompatible Burak facade, excluded",
+    "Yapay Zeka Görseller — excluded from factual project media"
+  ],
+  "source_folders": [
+    {
+      "name": "Rüya Şehir",
+      "url": "https://drive.google.com/drive/folders/1jhQy5ZjQuThR7BF6kp_t-eDVqxQ0cc9R"
+    },
+    {
+      "name": "Burak Manzara Evleri",
+      "url": "https://drive.google.com/drive/folders/1WI81bIW0meENSnuPPbR0U3F9wjRDTvhG"
+    },
+    {
+      "name": "Villa 2020",
+      "url": "https://drive.google.com/drive/folders/19dPyUu5Fb0WU4n4P0NckGAOEU-0TZScd"
+    },
+    {
+      "name": "Nisa Apartmanı",
+      "url": "https://drive.google.com/drive/folders/1fZHGDKT1Uhh7Fkf4dEA50nWElpQKImY1"
+    },
+    {
+      "name": "Bilal Cafe",
+      "url": "https://drive.google.com/drive/folders/1KeqZlZuRGJFQktObCFmW__N9ZzA7K4QS"
+    }
+  ]
+}
