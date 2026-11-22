@@ -70,8 +70,9 @@ export function ProjectCarousel(){
   const a=Math.abs(d);
   if(mobile)return {x:`${d*106}%`,z:0,rotateY:0,scale:d===0?1:.88,opacity:a>1?0:d===0?1:.4};
   // Concave gallery wall (reference): sides smaller, outer edges turned toward the viewer, no overlap.
-  const X=[0,98,182][Math.min(a,2)]??200;
-  return {x:`${Math.sign(d)*X}%`,z:-a*60,rotateY:-Math.sign(d)*(a===0?0:a===1?22:30),scale:[1,.82,.68][Math.min(a,2)]??.6,opacity:a>2?0:1};
+  // Clearly readable angles: outer edges turn toward the viewer (concave wall), depth steps back.
+  const X=[0,100,176][Math.min(a,2)]??200;
+  return {x:`${Math.sign(d)*X}%`,z:-a*90,rotateY:-Math.sign(d)*(a===0?0:a===1?36:46),scale:[1,.84,.7][Math.min(a,2)]??.6,opacity:a>2?0:1};
  };
  return <div className="u3-carousel">
   <div className="u3-stage" onKeyDown={e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);}}
@@ -176,13 +177,35 @@ function ProjectDetail({project:p,onClose,reduced}:{project:U3Project;onClose:()
     </motion.div>}
    </div>
    <motion.nav className="u3-d-nav" variants={item} aria-label="Görsel gezinme">
+    <GalleryRail project={p} k={k} reduced={reduced} onPick={j=>{setDir(j>k?1:-1);setK(j);}} onStep={go}/>
+    <div className="u3-d-ctl">
     <button type="button" className="u3-round" onClick={()=>go(-1)} aria-label="Önceki görsel">←</button>
     <span className="u3-d-count" aria-live="polite"><b>{String(k+1).padStart(2,'0')}</b> / {String(n).padStart(2,'0')}</span>
     <button type="button" className="u3-round" onClick={()=>go(1)} aria-label="Sonraki görsel">→</button>
-    <div className="u3-d-rail">
-     {p.gallery.map((g,j)=><button key={g.src} type="button" className={j===k?'on':''} aria-label={`Görsel ${j+1}`} aria-current={j===k} onClick={()=>{setDir(j>k?1:-1);setK(j);}}><img src={g.src} alt="" loading="lazy"/></button>)}
     </div>
    </motion.nav>
   </motion.div>
  </motion.div>;
+}
+
+/** Bottom slide bar inside the project view: the same spatial glass-card language as the project carousel. */
+function GalleryRail({project:p,k,reduced,onPick,onStep}:{project:U3Project;k:number;reduced:boolean;onPick:(j:number)=>void;onStep:(d:number)=>void}){
+ const n=p.gallery.length;
+ const start=useRef<{x:number;y:number}|null>(null);
+ return <div className="u3-d-rail" role="group" aria-label="Proje görselleri"
+  onPointerDown={e=>{start.current={x:e.clientX,y:e.clientY};}} onPointerCancel={()=>{start.current=null;}}
+  onPointerUp={e=>{const s0=start.current;start.current=null;if(!s0)return;const dx=e.clientX-s0.x,dy=e.clientY-s0.y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*2)onStep(dx<0?1:-1);}}>
+  <div className="u3-d-rail-floor" aria-hidden="true"/>
+  {p.gallery.map((g,j)=>{
+   let d=j-k;if(d>n/2)d-=n;if(d<-n/2)d+=n;const a=Math.abs(d);
+   const X=[0,92,162,220][Math.min(a,3)];
+   return <motion.button key={g.src} type="button" className={`u3-d-slide${d===0?' on':''}`} aria-label={`Görsel ${j+1}`} aria-current={d===0}
+    tabIndex={a<=2?0:-1} style={{zIndex:10-a}} initial={false}
+    animate={{x:`${Math.sign(d)*X}%`,z:-a*70,rotateY:-Math.sign(d)*(a===0?0:a===1?38:a===2?48:54),scale:[1,.82,.68,.58][Math.min(a,3)],opacity:a>3?0:a===3?.5:1}}
+    transition={reduced?{duration:0}:{type:'spring',stiffness:80,damping:18}}
+    onClick={()=>{if(d!==0)onPick(j);}}>
+    <span><img src={g.src} alt="" loading={a<=2?'eager':'lazy'} draggable={false}/></span>
+   </motion.button>;
+  })}
+ </div>;
 }
