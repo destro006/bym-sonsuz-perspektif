@@ -138,3 +138,18 @@ html:not([data-exnav="1"]) .exnav-home{opacity:0;pointer-events:none;transform:t
 /* Anchored sections land below the floating navigation. */
 [id^="bolum-"],#form,#portfoy,#galeri,#hikaye{scroll-margin-top:84px}
 @media(max-width:700px){[id^="bolum-"],#form,#portfoy,#galeri,#hikaye{scroll-margin-top:128px}}
+
+/* ---------- Mobile: the opening universe story runs edge to edge, full screen ---------- */
+@media(max-width:860px){
+ /* Break the journey out of the page frame (the chapters below keep their gutters). */
+ .landing-shell .scroll-journey{margin:-8px -8px 0}
+ .landing-shell .stage-sticky{top:0;height:100vh;height:100dvh;border:0;border-radius:0;box-shadow:none}
+ /* Without a frame, the corner notches become floating controls over the scene. */
+ .landing-shell .jn-tl,.landing-shell .jn-tr{background:transparent;padding:0;top:calc(env(safe-area-inset-top,0px) + 12px)}
+ .landing-shell .jn-tl{left:12px}.landing-shell .jn-tr{right:12px}
+ .landing-shell .jn-tl::before,.landing-shell .jn-tl::after,.landing-shell .jn-tr::before,.landing-shell .jn-tr::after{display:none}
+ .landing-shell .brand-lockup{box-shadow:0 10px 26px -12px rgba(0,0,0,.7)}
+ .landing-shell .bottom-hud{bottom:calc(env(safe-area-inset-bottom,0px) + 18px)}
+ /* The architectural title sits below the floating exhibition nav. */
+ .landing-shell .ah-title-wrap{padding-top:calc(env(safe-area-inset-top,0px) + 128px)}
+}
